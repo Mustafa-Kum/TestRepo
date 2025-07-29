@@ -2,12 +2,7 @@ class PWA {
   constructor() {
     this.swRegistration = null;
     this.isOnline = navigator.onLine;
-    this.isAndroid = this.detectAndroid();
     this.init();
-  }
-
-  detectAndroid() {
-    return /Android/i.test(navigator.userAgent);
   }
 
   async init() {
@@ -15,31 +10,6 @@ class PWA {
     await this.registerServiceWorker();
     this.setupInstallPrompt();
     this.setupNotifications();
-    
-    // Android-specific optimizations
-    if (this.isAndroid) {
-      this.setupAndroidOptimizations();
-    }
-  }
-
-  setupAndroidOptimizations() {
-    // Prevent zoom on double tap for Android
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', (event) => {
-      const now = (new Date()).getTime();
-      if (now - lastTouchEnd <= 300) {
-        event.preventDefault();
-      }
-      lastTouchEnd = now;
-    }, false);
-
-    // Add Android-specific CSS classes
-    document.body.classList.add('android-device');
-    
-    // Optimize for Android Chrome
-    if (navigator.userAgent.includes('Chrome')) {
-      document.body.classList.add('android-chrome');
-    }
   }
 
   setupOnlineOfflineListeners() {
@@ -57,10 +27,7 @@ class PWA {
   async registerServiceWorker() {
     if ('serviceWorker' in navigator) {
       try {
-        this.swRegistration = await navigator.serviceWorker.register('/sw.js', {
-          scope: '/',
-          updateViaCache: 'none'
-        });
+        this.swRegistration = await navigator.serviceWorker.register('/sw.js');
         console.log('Service Worker registered successfully:', this.swRegistration);
 
         // Handle service worker updates
@@ -99,14 +66,6 @@ class PWA {
     window.addEventListener('appinstalled', () => {
       console.log('PWA was installed');
       this.hideInstallPrompt();
-      
-      // Track installation
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'pwa_installed', {
-          'event_category': 'engagement',
-          'event_label': this.isAndroid ? 'android' : 'ios'
-        });
-      }
     });
   }
 
@@ -130,11 +89,6 @@ class PWA {
   }
 
   showInstallPrompt() {
-    // Don't show install prompt if already installed
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      return;
-    }
-
     const installButton = document.createElement('div');
     installButton.id = 'install-prompt';
     installButton.className = 'install-prompt';
@@ -240,7 +194,7 @@ class PWA {
       try {
         await this.swRegistration.showNotification(title, {
           icon: '/icons/icon-192x192.png',
-          badge: '/icons/icon-192x192.png',
+          badge: '/icons/icon-72x72.png',
           vibrate: [100, 50, 100],
           ...options
         });

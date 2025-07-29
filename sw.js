@@ -10,10 +10,7 @@ const STATIC_ASSETS = [
   '/js/WeatherService.js',
   '/js/WeatherUI.js',
   '/js/WeatherUtils.js',
-  '/js/pwa.js',
   '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon.svg',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/webfonts/fa-solid-900.woff2',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/webfonts/fa-solid-900.ttf'
@@ -145,7 +142,7 @@ self.addEventListener('push', (event) => {
   const options = {
     body: event.data ? event.data.text() : 'Yeni hava durumu güncellemesi!',
     icon: '/icons/icon-192x192.png',
-    badge: '/icons/icon-192x192.png',
+    badge: '/icons/icon-72x72.png',
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
@@ -155,12 +152,12 @@ self.addEventListener('push', (event) => {
       {
         action: 'explore',
         title: 'Görüntüle',
-        icon: '/icons/icon-192x192.png'
+        icon: '/icons/icon-72x72.png'
       },
       {
         action: 'close',
         title: 'Kapat',
-        icon: '/icons/icon-192x192.png'
+        icon: '/icons/icon-72x72.png'
       }
     ]
   };
