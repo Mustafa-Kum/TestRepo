@@ -127,35 +127,6 @@ const weatherUI = {
         }
     },
     
-    updateCurrentWeatherForToday: function() {
-        if (!currentForecastData || !currentForecastData.list) return;
-        
-        // Get current weather (first item in the list)
-        const currentWeather = currentForecastData.list[0];
-        if (!currentWeather) return;
-        
-        // Update current weather card with "Şimdi"
-        if (dom.currentTemperature) {
-            dom.currentTemperature.textContent = `${Math.round(currentWeather.main.temp)}°C`;
-        }
-        
-        if (dom.weatherCondition) {
-            const translatedDescription = utils.translateWeatherDescription(currentWeather.weather[0]?.description || '');
-            dom.weatherCondition.textContent = translatedDescription;
-        }
-        
-        if (dom.feelsLike) {
-            dom.feelsLike.textContent = `Hissedilen ${Math.round(currentWeather.main.feels_like)}°`;
-        }
-        
-        if (dom.currentLabel) {
-            dom.currentLabel.textContent = 'Şimdi';
-        }
-        
-        // Update hourly forecast for today
-        this.updateHourlyForecast(currentForecastData);
-    },
-    
     updateSelectedDayWeather: function(dayIndex) {
         if (!currentForecastData || !currentForecastData.list) return;
         
@@ -336,24 +307,16 @@ const weatherUI = {
             dailyGroups[dayKey].push(forecast);
         });
         
-        // Get today and next 4 days (including today)
+        // Get next 5 days (excluding today)
         const today = new Date();
         const todayKey = today.toISOString().split('T')[0];
-        const todayForecasts = dailyGroups[todayKey] || [];
         const futureDays = Object.entries(dailyGroups)
             .filter(([dayKey]) => dayKey !== todayKey)
-            .slice(0, 4);
+            .slice(0, 5);
         
-        // Add today as first item
-        const allDays = [
-            [todayKey, todayForecasts],
-            ...futureDays
-        ];
-        
-        allDays.forEach(([dayKey, forecasts], index) => {
+        futureDays.forEach(([dayKey, forecasts], index) => {
             const date = new Date(dayKey);
-            const isToday = dayKey === todayKey;
-            const dayName = isToday ? 'Bugün' : utils.getDayName(date.getDay());
+            const dayName = utils.getDayName(date.getDay());
             
             // Calculate average temperature
             const avgTemp = Math.round(forecasts.reduce((sum, f) => sum + f.main.temp, 0) / forecasts.length);
@@ -396,13 +359,7 @@ const weatherUI = {
                 selectedDayIndex = index;
                 
                 // Update current weather card for selected day
-                if (isToday) {
-                    // If today is clicked, show "Şimdi" and current weather
-                    this.updateCurrentWeatherForToday();
-                } else {
-                    // For other days, show the selected day's weather
-                    this.updateSelectedDayWeather(index - 1); // -1 because we added today as first item
-                }
+                this.updateSelectedDayWeather(index);
             });
             
             if (dom.dailyForecastContainer) {
@@ -492,25 +449,25 @@ function initCitySelect() {
 
 // Load weather for specific city
 function loadWeatherForCity(city) {
-    weatherService.fetchWeatherAndForecastWithLoading(
+                weatherService.fetchWeatherAndForecastWithLoading(
         city,
-        (isLoading) => {
+                    (isLoading) => {
             console.log('[DEBUG] Loading weather data for', city, ':', isLoading);
-        },
-        (data) => {
+                    },
+                    (data) => {
             console.log('[DEBUG] Current weather data received for', city, ':', data);
             weatherUI.updateCurrentWeather(data);
-        },
-        (forecastData) => {
+                    },
+                    (forecastData) => {
             console.log('[DEBUG] Forecast data received for', city, ':', forecastData);
             weatherUI.updateHourlyForecast(forecastData);
             weatherUI.updateDailyForecast(forecastData);
-        },
-        (msg) => {
+                    },
+                    (msg) => {
             console.log('[DEBUG] Error occurred for', city, ':', msg);
-            weatherUI.showError(msg);
-        },
-        () => {
+                        weatherUI.showError(msg);
+                    },
+                    () => {
             console.log('[DEBUG] hideAll called');
         }
     );
