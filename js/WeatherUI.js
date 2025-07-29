@@ -94,8 +94,22 @@ WeatherUI.prototype.displayForecastData = function(data) {
         // 5 günlük tahmin için günlük gruplar oluştur
         const dailyForecasts = this.groupForecastsByDay(data.list);
         
+        // Bugünün tarihini al
+        const today = new Date();
+        const todayKey = today.toISOString().split('T')[0];
+        
         dailyForecasts.forEach((dayForecast, index) => {
             if (index >= 5) return; // Sadece 5 gün göster
+            
+            // İlk forecast'un tarihini kontrol et
+            const firstForecast = dayForecast[0];
+            const forecastDate = new Date(firstForecast.dt * 1000);
+            const forecastKey = forecastDate.toISOString().split('T')[0];
+            
+            // Bugünün forecast'unu atla
+            if (forecastKey === todayKey) {
+                return;
+            }
             
             const dayCard = this.createDayForecastCard(dayForecast);
             forecastContainer.appendChild(dayCard);
