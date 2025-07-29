@@ -47,59 +47,61 @@
             </button>
         </div>
 
-        <div class="weather-display" id="weather-display">
-            <div class="location-info">
-                <h2 id="location">
-                    <i class="fas fa-location-dot"></i>
-                    <span id="location-text"></span>
-                </h2>
-                <p id="current-time"></p>
-            </div>
+        <div class="weather-container" id="weather-container">
+            <div class="weather-display" id="weather-display">
+                <div class="location-info">
+                    <h2 id="location">
+                        <i class="fas fa-location-dot"></i>
+                        <span id="location-text"></span>
+                    </h2>
+                    <p id="current-time"></p>
+                </div>
 
-            <div class="main-weather">
-                <div class="temperature-section">
-                    <span id="temperature"></span>
-                    <div class="feels-like">
-                        <span id="feels-like"></span>
+                <div class="main-weather">
+                    <div class="temperature-section">
+                        <span id="temperature"></span>
+                        <div class="feels-like">
+                            <span id="feels-like"></span>
+                        </div>
+                    </div>
+                    <div class="weather-icon-section">
+                        <img id="weather-icon" src="" alt="Hava Durumu İkonu">
+                        <p id="description"></p>
                     </div>
                 </div>
-                <div class="weather-icon-section">
-                    <img id="weather-icon" src="" alt="Hava Durumu İkonu">
-                    <p id="description"></p>
+
+                <div class="weather-details">
+                    <div class="detail-item">
+                        <i class="fas fa-tint"></i>
+                        <span class="detail-label">Nem</span>
+                        <span id="humidity" class="detail-value">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-wind"></i>
+                        <span class="detail-label">Rüzgar</span>
+                        <span id="wind-speed" class="detail-value">-</span>
+                    </div>
+                </div>
+
+                <div class="sun-info">
+                    <div class="sun-item">
+                        <i class="fas fa-sun"></i>
+                        <span class="sun-label">Gündoğumu</span>
+                        <span id="sunrise" class="sun-time">-</span>
+                    </div>
+                    <div class="sun-item">
+                        <i class="fas fa-moon"></i>
+                        <span class="sun-label">Günbatımı</span>
+                        <span id="sunset" class="sun-time">-</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="weather-details">
-                <div class="detail-item">
-                    <i class="fas fa-tint"></i>
-                    <span class="detail-label">Nem</span>
-                    <span id="humidity" class="detail-value">-</span>
+            <div class="forecast-section" id="forecast-section">
+                <h2><i class="fas fa-calendar-alt"></i> 5 Günlük Tahmin</h2>
+                <div class="forecast-container" id="forecast-container">
+                    <!-- Forecast cards will be dynamically added here -->
                 </div>
-                <div class="detail-item">
-                    <i class="fas fa-wind"></i>
-                    <span class="detail-label">Rüzgar</span>
-                    <span id="wind-speed" class="detail-value">-</span>
-                </div>
-            </div>
-
-            <div class="sun-info">
-                <div class="sun-item">
-                    <i class="fas fa-sun"></i>
-                    <span class="sun-label">Gündoğumu</span>
-                    <span id="sunrise" class="sun-time">-</span>
-                </div>
-                <div class="sun-item">
-                    <i class="fas fa-moon"></i>
-                    <span class="sun-label">Günbatımı</span>
-                    <span id="sunset" class="sun-time">-</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="forecast-section" id="forecast-section">
-            <h2><i class="fas fa-calendar-alt"></i> 5 Günlük Tahmin</h2>
-            <div class="forecast-container" id="forecast-container">
-                <!-- Forecast cards will be dynamically added here -->
             </div>
         </div>
 

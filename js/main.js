@@ -16,6 +16,7 @@ const utils = typeof WeatherUtils !== 'undefined' ? WeatherUtils : window.Weathe
 const dom = {
     citySelect: document.getElementById('city-select'),
     getWeatherBtn: document.getElementById('get-weather-btn'),
+    weatherContainer: document.getElementById('weather-container'),
     weatherDisplay: document.getElementById('weather-display'),
     forecastSection: document.getElementById('forecast-section'),
     forecastContainer: document.getElementById('forecast-container'),

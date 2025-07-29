@@ -6,7 +6,7 @@ function WeatherUI(dom, utils) {
 
 WeatherUI.prototype.showWeatherDisplay = function() {
     this.hideAll();
-    this.dom.weatherDisplay.classList.add('show');
+    this.dom.weatherContainer.classList.add('show');
 };
 
 WeatherUI.prototype.showError = function(message) {
@@ -19,8 +19,7 @@ WeatherUI.prototype.showError = function(message) {
 };
 
 WeatherUI.prototype.hideAll = function() {
-    this.dom.weatherDisplay.classList.remove('show');
-    this.dom.forecastSection.classList.remove('show');
+    this.dom.weatherContainer.classList.remove('show');
     this.dom.errorMessage.classList.remove('show');
 };
 
@@ -118,10 +117,7 @@ WeatherUI.prototype.displayForecastData = function(data) {
             this.showSelectedDayForecast(futureForecasts[0]);
         }
         
-        // Forecast section'ı göster
-        if (this.dom.forecastSection) {
-            this.dom.forecastSection.classList.add('show');
-        }
+        // Forecast section zaten weather container içinde olduğu için ayrıca göstermeye gerek yok
         
     } catch (error) {
         console.error('Forecast verisi gösterilirken hata:', error);
