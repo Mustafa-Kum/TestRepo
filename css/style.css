@@ -438,114 +438,114 @@ body::before {
 /* Küçük Bilgisayar Ekranları (768px - 1024px) */
 @media (min-width: 768px) and (max-width: 1024px) {
     body {
-        padding: 15px;
+        padding: 10px;
     }
 
     .container {
-        padding: 20px;
-        max-width: 500px;
-        max-height: calc(100vh - 30px);
-        border-radius: 20px;
+        padding: 15px;
+        max-width: 450px;
+        max-height: calc(100vh - 20px);
+        border-radius: 16px;
     }
 
     .header h1 {
-        font-size: 1.8em;
-        gap: 8px;
+        font-size: 1.6em;
+        gap: 6px;
     }
 
     .header p {
-        font-size: 0.85em;
+        font-size: 0.8em;
     }
 
     .search-section {
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
 
     .input-group i {
-        left: 15px;
-        font-size: 1em;
+        left: 12px;
+        font-size: 0.9em;
     }
 
     #city-select {
-        padding: 12px 12px 12px 40px;
-        font-size: 0.95em;
+        padding: 10px 10px 10px 35px;
+        font-size: 0.9em;
     }
 
     #get-weather-btn {
-        padding: 12px;
-        font-size: 0.95em;
+        padding: 10px;
+        font-size: 0.9em;
     }
 
     .weather-display {
-        padding: 12px;
-        margin-top: 12px;
+        padding: 10px;
+        margin-top: 10px;
     }
 
     .location-info {
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
     #location {
-        font-size: 1.3em;
+        font-size: 1.1em;
     }
 
     #current-time {
-        font-size: 0.8em;
+        font-size: 0.75em;
     }
 
     .main-weather {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 12px;
-        margin: 12px 0;
+        gap: 8px;
+        margin: 8px 0;
     }
 
     .temperature-section {
         text-align: center;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
     #temperature {
-        font-size: 3.5em;
+        font-size: 3em;
     }
 
     #feels-like {
-        font-size: 0.85em;
+        font-size: 0.8em;
     }
 
     #weather-icon {
-        width: 80px;
-        height: 80px;
+        width: 65px;
+        height: 65px;
     }
 
     #description {
-        font-size: 0.95em;
+        font-size: 0.85em;
     }
 
     .weather-details,
     .sun-info {
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        margin: 12px 0;
+        gap: 8px;
+        margin: 8px 0;
     }
 
     .detail-item,
     .sun-item {
-        padding: 12px;
+        padding: 8px;
     }
 
     .detail-item i, .sun-item i {
-        font-size: 1.3em;
-        margin-bottom: 4px;
+        font-size: 1.1em;
+        margin-bottom: 3px;
     }
 
     .detail-label, .sun-label {
-        font-size: 0.75em;
+        font-size: 0.7em;
     }
 
     .detail-value, .sun-time {
-        font-size: 0.9em;
+        font-size: 0.8em;
     }
 }
 
@@ -1568,7 +1568,46 @@ body::before {
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) and (max-width: 1024px) {
+    .forecast-section {
+        padding: 12px;
+        margin-top: 12px;
+    }
+    
+    .forecast-section h2 {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+    
+    .forecast-day-select {
+        padding: 10px 10px 10px 35px;
+        font-size: 0.9em;
+    }
+    
+    .forecast-day-select::before {
+        left: 12px;
+        font-size: 1em;
+    }
+    
+    .forecast-details-container {
+        min-height: 150px;
+    }
+    
+    .forecast-day-card {
+        padding: 10px;
+    }
+    
+    .forecast-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .forecast-temp {
+        font-size: 1.5em;
+    }
+}
+
+@media (min-width: 1025px) {
     .forecast-section {
         padding: 20px;
         margin-top: 20px;
