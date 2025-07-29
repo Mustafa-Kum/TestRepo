@@ -67,6 +67,10 @@ console.log('[DEBUG] BASE_URL:', BASE_URL);
 // WeatherUtils saf modül olarak kullanılıyor
 const utils = typeof WeatherUtils !== 'undefined' ? WeatherUtils : window.WeatherUtils;
 
+// Global variables to store forecast data
+let currentForecastData = null;
+let selectedDayIndex = 0; // 0 = today, 1 = tomorrow, etc.
+
 // DOM Elements for new layout
 const dom = {
     // City selector
@@ -84,6 +88,7 @@ const dom = {
     currentTemperature: document.querySelector('.current-temperature'),
     weatherCondition: document.querySelector('.weather-condition'),
     feelsLike: document.querySelector('.feels-like'),
+    currentLabel: document.querySelector('.current-label'),
     hourlyForecast: document.querySelector('.hourly-forecast'),
     dailyForecastContainer: document.querySelector('.daily-forecast-container'),
     
@@ -115,6 +120,116 @@ const weatherUI = {
         if (dom.feelsLike) {
             dom.feelsLike.textContent = `Hissedilen ${Math.round(main.feels_like)}°`;
         }
+        
+        // Update current label
+        if (dom.currentLabel) {
+            dom.currentLabel.textContent = 'Şimdi';
+        }
+    },
+    
+    updateSelectedDayWeather: function(dayIndex) {
+        if (!currentForecastData || !currentForecastData.list) return;
+        
+        // Group forecasts by day
+        const dailyGroups = {};
+        currentForecastData.list.forEach(forecast => {
+            const date = new Date(forecast.dt * 1000);
+            const dayKey = date.toISOString().split('T')[0];
+            
+            if (!dailyGroups[dayKey]) {
+                dailyGroups[dayKey] = [];
+            }
+            dailyGroups[dayKey].push(forecast);
+        });
+        
+        // Get future days (excluding today)
+        const today = new Date();
+        const todayKey = today.toISOString().split('T')[0];
+        const futureDays = Object.entries(dailyGroups)
+            .filter(([dayKey]) => dayKey !== todayKey)
+            .slice(0, 5);
+        
+        if (dayIndex >= 0 && dayIndex < futureDays.length) {
+            const [dayKey, forecasts] = futureDays[dayIndex];
+            const date = new Date(dayKey);
+            const dayName = utils.getDayName(date.getDay());
+            
+            // Calculate average values for the selected day
+            const avgTemp = Math.round(forecasts.reduce((sum, f) => sum + f.main.temp, 0) / forecasts.length);
+            const avgFeelsLike = Math.round(forecasts.reduce((sum, f) => sum + f.main.feels_like, 0) / forecasts.length);
+            
+            // Get most common weather icon
+            const weatherIcons = forecasts.map(f => f.weather[0]?.icon).filter(Boolean);
+            const mostCommonIcon = this.getMostCommonIcon(weatherIcons);
+            const weatherDescription = forecasts[0]?.weather[0]?.description || '';
+            
+            // Update current weather card
+            if (dom.currentTemperature) {
+                dom.currentTemperature.textContent = `${avgTemp}°C`;
+            }
+            
+            if (dom.weatherCondition) {
+                const translatedDescription = utils.translateWeatherDescription(weatherDescription);
+                dom.weatherCondition.textContent = translatedDescription;
+            }
+            
+            if (dom.feelsLike) {
+                dom.feelsLike.textContent = `Hissedilen ${avgFeelsLike}°`;
+            }
+            
+            if (dom.currentLabel) {
+                dom.currentLabel.textContent = dayName;
+            }
+            
+            // Update hourly forecast for the selected day
+            this.updateHourlyForecastForDay(forecasts);
+        }
+    },
+    
+    updateHourlyForecastForDay: function(dayForecasts) {
+        if (!dom.hourlyForecast) return;
+        
+        // Clear existing hourly items
+        dom.hourlyForecast.innerHTML = '';
+        
+        // Show hourly data for the selected day
+        dayForecasts.forEach((hour, index) => {
+            const time = new Date(hour.dt * 1000);
+            const hourStr = `${time.getHours()}:00`;
+            const temp = Math.round(hour.main.temp);
+            const icon = hour.weather[0]?.icon || '01d';
+            
+            const hourlyItem = document.createElement('div');
+            hourlyItem.className = 'hourly-item';
+            
+            // Determine icon based on weather condition
+            let iconClass = 'fas fa-moon'; // Default night icon
+            if (icon.includes('d')) {
+                if (icon.includes('01')) iconClass = 'fas fa-sun';
+                else if (icon.includes('02') || icon.includes('03') || icon.includes('04')) iconClass = 'fas fa-cloud';
+                else if (icon.includes('09') || icon.includes('10')) iconClass = 'fas fa-cloud-rain';
+                else if (icon.includes('11')) iconClass = 'fas fa-bolt';
+                else if (icon.includes('13')) iconClass = 'fas fa-snowflake';
+                else if (icon.includes('50')) iconClass = 'fas fa-smog';
+            } else {
+                if (icon.includes('01')) iconClass = 'fas fa-moon';
+                else if (icon.includes('02') || icon.includes('03') || icon.includes('04')) iconClass = 'fas fa-cloud';
+                else if (icon.includes('09') || icon.includes('10')) iconClass = 'fas fa-cloud-rain';
+                else if (icon.includes('11')) iconClass = 'fas fa-bolt';
+                else if (icon.includes('13')) iconClass = 'fas fa-snowflake';
+                else if (icon.includes('50')) iconClass = 'fas fa-smog';
+            }
+            
+            hourlyItem.innerHTML = `
+                <div class="hourly-temp">${temp}°</div>
+                <div class="hourly-icon">
+                    <i class="${iconClass}"></i>
+                </div>
+                <div class="hourly-time">${hourStr}</div>
+            `;
+            
+            dom.hourlyForecast.appendChild(hourlyItem);
+        });
     },
     
     updateHourlyForecast: function(data) {
@@ -172,6 +287,9 @@ const weatherUI = {
     updateDailyForecast: function(data) {
         if (!data || !data.list) return;
         
+        // Store forecast data globally
+        currentForecastData = data;
+        
         // Clear existing daily items
         if (dom.dailyForecastContainer) {
             dom.dailyForecastContainer.innerHTML = '';
@@ -220,6 +338,7 @@ const weatherUI = {
             
             const dailyItem = document.createElement('div');
             dailyItem.className = `daily-item ${index === 0 ? 'selected' : ''}`;
+            dailyItem.dataset.dayIndex = index;
             
             dailyItem.innerHTML = `
                 <div class="daily-day">${dayName}</div>
@@ -228,6 +347,20 @@ const weatherUI = {
                 </div>
                 <div class="daily-temp">${maxTemp}°/${minTemp}°</div>
             `;
+            
+            // Add click event listener
+            dailyItem.addEventListener('click', () => {
+                // Remove selected class from all items
+                document.querySelectorAll('.daily-item').forEach(d => d.classList.remove('selected'));
+                // Add selected class to clicked item
+                dailyItem.classList.add('selected');
+                
+                // Update selected day index
+                selectedDayIndex = index;
+                
+                // Update current weather card for selected day
+                this.updateSelectedDayWeather(index);
+            });
             
             if (dom.dailyForecastContainer) {
                 dom.dailyForecastContainer.appendChild(dailyItem);
