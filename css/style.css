@@ -202,7 +202,9 @@ body::before {
     flex: 1; 
     flex-direction: column;
     min-height: 0; 
-    overflow: hidden; 
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - 200px);
 }
 
 .weather-display.show {
@@ -437,8 +439,122 @@ body::before {
 
 /* Responsive Design */
 
-/* Tablet (768px - 1024px) ve Büyük Telefonlar (481px - 767px) */
-@media (min-width: 481px) and (max-width: 1024px) {
+/* Küçük Bilgisayar Ekranları (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        padding: 20px;
+        max-width: 500px;
+        max-height: calc(100vh - 30px);
+        border-radius: 20px;
+    }
+
+    .header h1 {
+        font-size: 1.8em;
+        gap: 8px;
+    }
+
+    .header p {
+        font-size: 0.85em;
+    }
+
+    .search-section {
+        margin-bottom: 20px;
+    }
+
+    .input-group i {
+        left: 15px;
+        font-size: 1em;
+    }
+
+    #city-select {
+        padding: 12px 12px 12px 40px;
+        font-size: 0.95em;
+    }
+
+    #get-weather-btn {
+        padding: 12px;
+        font-size: 0.95em;
+    }
+
+    .weather-display {
+        padding: 15px;
+        margin-top: 15px;
+    }
+
+    .location-info {
+        margin-bottom: 10px;
+    }
+
+    #location {
+        font-size: 1.3em;
+    }
+
+    #current-time {
+        font-size: 0.8em;
+    }
+
+    .main-weather {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+        margin: 12px 0;
+    }
+
+    .temperature-section {
+        text-align: center;
+        margin-bottom: 8px;
+    }
+
+    #temperature {
+        font-size: 3.5em;
+    }
+
+    #feels-like {
+        font-size: 0.85em;
+    }
+
+    #weather-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    #description {
+        font-size: 0.95em;
+    }
+
+    .weather-details,
+    .sun-info {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin: 12px 0;
+    }
+
+    .detail-item,
+    .sun-item {
+        padding: 12px;
+    }
+
+    .detail-item i, .sun-item i {
+        font-size: 1.3em;
+        margin-bottom: 4px;
+    }
+
+    .detail-label, .sun-label {
+        font-size: 0.75em;
+    }
+
+    .detail-value, .sun-time {
+        font-size: 0.9em;
+    }
+}
+
+/* Tablet (481px - 767px) ve Büyük Telefonlar */
+@media (min-width: 481px) and (max-width: 767px) {
     body {
         padding: 20px;
     }
@@ -520,8 +636,95 @@ body::before {
     }
 }
 
-/* Web (Min 1025px) */
-@media (min-width: 1025px) {
+/* Küçük Laptop Ekranları (1025px - 1366px) */
+@media (min-width: 1025px) and (max-width: 1366px) {
+    body {
+        padding: 20px;
+    }
+
+    .container {
+        padding: 25px;
+        max-width: 550px;
+        max-height: calc(100vh - 40px);
+    }
+
+    .header h1 {
+        font-size: 2.2em;
+    }
+
+    .header p {
+        font-size: 0.95em;
+    }
+
+    .input-group i {
+        left: 18px; 
+    }
+    #city-select {
+        padding: 16px 16px 16px 48px; 
+        font-size: 1.1em;
+    }
+
+    #get-weather-btn {
+        padding: 16px;
+        font-size: 1.1em;
+    }
+
+    .weather-display {
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .main-weather {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 18px;
+    }
+
+    .temperature-section {
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    #temperature {
+        font-size: 4.2em;
+    }
+
+    #weather-icon {
+        width: 95px;
+        height: 95px;
+    }
+
+    #description {
+        font-size: 1.1em;
+    }
+
+    .weather-details,
+    .sun-info {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .detail-item,
+    .sun-item {
+        padding: 18px;
+    }
+
+    .detail-item i, .sun-item i {
+        font-size: 1.5em;
+    }
+
+    .detail-label, .sun-label {
+        font-size: 0.9em;
+    }
+
+    .detail-value, .sun-time {
+        font-size: 1.1em;
+    }
+}
+
+/* Web (Min 1367px) */
+@media (min-width: 1367px) {
     body {
         padding: 30px;
     }
@@ -694,6 +897,7 @@ body::before {
     }
     .weather-display {
         padding: 10px;
+        max-height: calc(100vh - 150px);
     }
 }
 
@@ -786,6 +990,7 @@ body::before {
     }
     .weather-display {
         padding: 8px;
+        max-height: calc(100vh - 120px);
     }
 }
 
@@ -802,4 +1007,23 @@ body::before {
 .container::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+}
+
+/* Custom scrollbar for weather display */
+.weather-display::-webkit-scrollbar {
+    width: 3px;
+    background: transparent;
+}
+
+.weather-display::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.weather-display::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.2);
+    border-radius: 10px;
+}
+
+.weather-display::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.4);
 }
