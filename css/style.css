@@ -2,8 +2,9 @@
 
 /* Portrait Only Styles - Force portrait on mobile */
 @media screen and (orientation: landscape) and (max-width: 768px) {
-    body {
+    html, body {
         display: none !important;
+        overflow: hidden !important;
     }
     
     body::before {
@@ -35,6 +36,21 @@
         height: 100%;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         z-index: 9998;
+    }
+}
+
+/* Additional Chrome-specific landscape prevention */
+@media screen and (max-width: 768px) and (min-aspect-ratio: 1/1) {
+    html {
+        transform: rotate(-90deg) !important;
+        transform-origin: center center !important;
+        width: 100vh !important;
+        height: 100vw !important;
+        overflow: hidden !important;
+    }
+    
+    body {
+        display: none !important;
     }
 }
 
