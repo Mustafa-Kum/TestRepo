@@ -996,34 +996,53 @@ body::before {
 
 /* Custom scrollbar for container */
 .container::-webkit-scrollbar {
-    width: 4px;
-    background: transparent;
+    width: 8px;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .container::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
 }
 
 .container::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(102, 126, 234, 0.4);
     border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.6);
 }
 
 /* Custom scrollbar for weather display */
 .weather-display::-webkit-scrollbar {
-    width: 3px;
-    background: transparent;
+    width: 6px;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .weather-display::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.weather-display::-webkit-scrollbar-thumb {
-    background: rgba(102, 126, 234, 0.2);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
 }
 
+.weather-display::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.5);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .weather-display::-webkit-scrollbar-thumb:hover {
-    background: rgba(102, 126, 234, 0.4);
+    background: rgba(102, 126, 234, 0.7);
+}
+
+/* Firefox scrollbar styling */
+.container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(102, 126, 234, 0.4) rgba(255, 255, 255, 0.05);
+}
+
+.weather-display {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(102, 126, 234, 0.5) rgba(255, 255, 255, 0.05);
 }
