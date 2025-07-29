@@ -18,6 +18,18 @@ exports.handler = async function(event, context) {
     };
   }
 
+  // Test endpoint - function'ın çalıştığını doğrula
+  if (event.path === '/.netlify/functions/weather' && !event.queryStringParameters) {
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ 
+        message: 'Weather function is working!',
+        timestamp: new Date().toISOString()
+      })
+    };
+  }
+
   const API_KEY = process.env.WEATHER_API_KEY;
   
   if (!API_KEY) {
