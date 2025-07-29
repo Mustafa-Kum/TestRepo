@@ -1047,97 +1047,130 @@ body::before {
     scrollbar-color: rgba(102, 126, 234, 0.5) rgba(255, 255, 255, 0.05);
 }
 
-/* PWA Notifications and Status Indicators */
-.update-notification,
-.install-notification {
+/* PWA Specific Styles */
+.install-prompt {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    padding: 15px 20px;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     z-index: 1000;
-    animation: slideInRight 0.3s ease-out;
+    animation: slideInRight 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     max-width: 300px;
 }
 
-.update-content,
 .install-content {
     display: flex;
     align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.install-content i {
+    color: #667eea;
+    font-size: 1.2em;
+}
+
+.install-content span {
+    color: #2d3748;
+    font-size: 0.9em;
+    font-weight: 500;
+    flex: 1;
+}
+
+.install-btn, .dismiss-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.8em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.install-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.dismiss-btn {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.dismiss-btn:hover {
+    background: #cbd5e0;
+    transform: translateY(-2px);
+}
+
+.status-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    padding: 12px 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
     gap: 10px;
+    animation: slideInDown 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    max-width: 90vw;
+}
+
+.status-message.success {
+    border-left: 4px solid #48bb78;
+}
+
+.status-message.success i {
+    color: #48bb78;
+}
+
+.status-message.warning {
+    border-left: 4px solid #ed8936;
+}
+
+.status-message.warning i {
+    color: #ed8936;
+}
+
+.status-message.info {
+    border-left: 4px solid #4299e1;
+}
+
+.status-message.info i {
+    color: #4299e1;
+}
+
+.status-message.error {
+    border-left: 4px solid #f56565;
+}
+
+.status-message.error i {
+    color: #f56565;
+}
+
+.status-message span {
+    color: #2d3748;
     font-size: 0.9em;
     font-weight: 500;
 }
 
-.update-btn,
-.install-btn {
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 0.8em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.update-btn:hover,
-.install-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-1px);
-}
-
-.close-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 0.7em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.close-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.connection-status {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 8px 15px;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    z-index: 999;
-    font-size: 0.8em;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-    opacity: 0;
-    transform: translateY(-10px);
-}
-
-.connection-status.online {
-    opacity: 1;
-    transform: translateY(0);
-    color: #48bb78;
-}
-
-.connection-status.offline {
-    opacity: 1;
-    transform: translateY(0);
-    color: #f56565;
+.status-message.fade-out {
+    animation: fadeOut 0.5s ease forwards;
 }
 
 @keyframes slideInRight {
@@ -1151,37 +1184,68 @@ body::before {
     }
 }
 
-/* PWA Install Prompt Styles */
-.install-notification {
-    animation: slideInRight 0.3s ease-out;
+@keyframes slideInDown {
+    from {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
 }
 
-.install-content {
-    flex-wrap: wrap;
-    gap: 8px;
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-100%);
+    }
 }
 
-/* Responsive PWA Notifications */
-@media (max-width: 480px) {
-    .update-notification,
-    .install-notification {
-        top: 10px;
-        right: 10px;
-        left: 10px;
-        max-width: none;
-        padding: 12px 15px;
+/* PWA Mobile Optimizations */
+@media (display-mode: standalone) {
+    body {
+        padding: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
     
-    .update-content,
-    .install-content {
-        font-size: 0.8em;
-        gap: 8px;
+    .container {
+        border-radius: 0;
+        min-height: 100vh;
+        max-height: 100vh;
+        box-shadow: none;
     }
     
-    .connection-status {
-        top: 10px;
-        left: 10px;
-        padding: 6px 12px;
-        font-size: 0.75em;
+    .header {
+        padding-top: env(safe-area-inset-top);
+    }
+}
+
+/* PWA Safe Area Support */
+@supports (padding: max(0px)) {
+    .container {
+        padding-left: max(25px, env(safe-area-inset-left));
+        padding-right: max(25px, env(safe-area-inset-right));
+        padding-bottom: max(25px, env(safe-area-inset-bottom));
+    }
+}
+
+/* PWA Touch Optimizations */
+@media (pointer: coarse) {
+    .install-btn, .dismiss-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    #get-weather-btn {
+        min-height: 48px;
+    }
+    
+    #city-select {
+        min-height: 44px;
     }
 }

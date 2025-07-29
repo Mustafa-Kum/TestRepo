@@ -4,13 +4,11 @@
   "description": "Türkiye'deki şehirlerin güncel hava durumu bilgileri",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#667eea",
-  "theme_color": "#667eea",
+  "background_color": "#1a1a2e",
+  "theme_color": "#16213e",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "tr",
-  "dir": "ltr",
-  "categories": ["weather", "utilities"],
   "icons": [
     {
       "src": "icons/icon-72x72.png",
@@ -61,20 +59,7 @@
       "purpose": "maskable any"
     }
   ],
-  "shortcuts": [
-    {
-      "name": "Hava Durumu Ara",
-      "short_name": "Ara",
-      "description": "Hızlı hava durumu arama",
-      "url": "/?action=search",
-      "icons": [
-        {
-          "src": "icons/icon-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
-    }
-  ],
+  "categories": ["weather", "utilities"],
   "screenshots": [
     {
       "src": "screenshots/desktop.png",
