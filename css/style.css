@@ -57,6 +57,7 @@ body {
     align-items: center;
     padding: 10px 0 20px 0;
     flex-shrink: 0;
+    gap: 15px;
 }
 
 .app-title {
@@ -64,6 +65,43 @@ body {
     font-weight: 600;
     color: white;
     margin: 0;
+    flex-shrink: 0;
+}
+
+/* City Selector */
+.city-selector {
+    flex: 1;
+    max-width: 200px;
+}
+
+.city-select {
+    width: 100%;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%23ffffff" d="M6 8L0 2l1.4-1.4L6 5.2l4.6-4.6L12 2z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+}
+
+.city-select:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.city-select option {
+    background: #1e293b;
+    color: white;
+    padding: 8px;
 }
 
 .menu-button {
@@ -75,6 +113,7 @@ body {
     padding: 8px;
     border-radius: 50%;
     transition: background-color 0.3s ease;
+    flex-shrink: 0;
 }
 
 .menu-button:hover {
@@ -348,8 +387,21 @@ body {
         padding: 15px;
     }
     
+    .app-header {
+        gap: 10px;
+    }
+    
     .app-title {
         font-size: 1.3em;
+    }
+    
+    .city-selector {
+        max-width: 150px;
+    }
+    
+    .city-select {
+        padding: 6px 10px;
+        font-size: 0.8em;
     }
     
     .current-weather-card {
@@ -385,8 +437,21 @@ body {
         padding: 10px;
     }
     
+    .app-header {
+        gap: 8px;
+    }
+    
     .app-title {
         font-size: 1.2em;
+    }
+    
+    .city-selector {
+        max-width: 120px;
+    }
+    
+    .city-select {
+        padding: 5px 8px;
+        font-size: 0.75em;
     }
     
     .current-weather-card {
@@ -436,6 +501,10 @@ body {
     .menu-button {
         min-height: 44px;
         min-width: 44px;
+    }
+    
+    .city-select {
+        min-height: 44px;
     }
     
     .hourly-item,

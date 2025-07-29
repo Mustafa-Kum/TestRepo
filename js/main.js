@@ -69,6 +69,9 @@ const utils = typeof WeatherUtils !== 'undefined' ? WeatherUtils : window.Weathe
 
 // DOM Elements for new layout
 const dom = {
+    // City selector
+    citySelect: document.getElementById('city-select'),
+    
     // Weather data elements
     locationText: document.getElementById('location-text'),
     currentTemp: document.getElementById('current-temp'),
@@ -254,6 +257,23 @@ const weatherUI = {
     showError: function(message) {
         console.error('Weather error:', message);
         // For now, just log the error. You can add a toast notification later
+    },
+    
+    populateCitySelect: function(citySelect, turkishCities) {
+        citySelect.innerHTML = '';
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Şehir seçiniz...';
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        citySelect.appendChild(defaultOption);
+        
+        turkishCities.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
     }
 };
 
@@ -267,34 +287,60 @@ function addEventListeners() {
         });
     }
     
+    // City select functionality
+    if (dom.citySelect) {
+        dom.citySelect.addEventListener('change', () => {
+            const selectedCity = dom.citySelect.value;
+            console.log('[DEBUG] City changed to:', selectedCity);
+            if (selectedCity) {
+                loadWeatherForCity(selectedCity);
+            }
+        });
+    }
+    
+    // Initialize city select
+    initCitySelect();
+    
     // Auto-load weather for a default city
     loadDefaultWeather();
 }
 
-// Load default weather (Istanbul)
-function loadDefaultWeather() {
+// Initialize city select dropdown
+function initCitySelect() {
+    if (dom.citySelect && utils.turkishCities) {
+        weatherUI.populateCitySelect(dom.citySelect, utils.turkishCities);
+    }
+}
+
+// Load weather for specific city
+function loadWeatherForCity(city) {
     weatherService.fetchWeatherAndForecastWithLoading(
-        'Istanbul',
+        city,
         (isLoading) => {
-            console.log('[DEBUG] Loading weather data:', isLoading);
+            console.log('[DEBUG] Loading weather data for', city, ':', isLoading);
         },
         (data) => {
-            console.log('[DEBUG] Current weather data received:', data);
+            console.log('[DEBUG] Current weather data received for', city, ':', data);
             weatherUI.updateCurrentWeather(data);
         },
         (forecastData) => {
-            console.log('[DEBUG] Forecast data received:', forecastData);
+            console.log('[DEBUG] Forecast data received for', city, ':', forecastData);
             weatherUI.updateHourlyForecast(forecastData);
             weatherUI.updateDailyForecast(forecastData);
         },
         (msg) => {
-            console.log('[DEBUG] Error occurred:', msg);
+            console.log('[DEBUG] Error occurred for', city, ':', msg);
             weatherUI.showError(msg);
         },
         () => {
             console.log('[DEBUG] hideAll called');
         }
     );
+}
+
+// Load default weather (Istanbul)
+function loadDefaultWeather() {
+    loadWeatherForCity('Istanbul');
 }
 
 // Initialize app
