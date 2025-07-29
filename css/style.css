@@ -236,100 +236,6 @@ body {
     font-weight: 500;
 }
 
-/* Weather Background */
-.weather-background {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    z-index: 1;
-}
-
-.landscape {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.hills {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60%;
-    background: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #5b21b6 100%);
-    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-    transform: scaleX(1.5);
-}
-
-.river {
-    position: absolute;
-    bottom: 20%;
-    right: 10%;
-    width: 40px;
-    height: 60px;
-    background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 100%);
-    border-radius: 20px;
-    transform: rotate(-15deg);
-}
-
-.frog {
-    position: absolute;
-    bottom: 25%;
-    left: 15%;
-    width: 12px;
-    height: 8px;
-    background: #22c55e;
-    border-radius: 50%;
-}
-
-.frog::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: 2px;
-    width: 4px;
-    height: 4px;
-    background: #22c55e;
-    border-radius: 50%;
-}
-
-.frog::after {
-    content: '';
-    position: absolute;
-    top: -2px;
-    right: 2px;
-    width: 4px;
-    height: 4px;
-    background: #22c55e;
-    border-radius: 50%;
-}
-
-.shooting-star {
-    position: absolute;
-    top: 20%;
-    right: 15%;
-    width: 20px;
-    height: 2px;
-    background: white;
-    border-radius: 1px;
-    transform: rotate(-45deg);
-}
-
-.shooting-star::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 8px;
-    height: 2px;
-    background: white;
-    border-radius: 1px;
-    transform: rotate(45deg);
-    opacity: 0.6;
-}
-
 /* Daily Forecast Section */
 .daily-forecast {
     flex-shrink: 0;
@@ -511,22 +417,6 @@ body {
     .daily-item {
         min-height: 44px;
     }
-}
-
-/* Animation for shooting star */
-@keyframes shootingStar {
-    0% {
-        transform: translateX(0) translateY(0) rotate(-45deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateX(-100px) translateY(-50px) rotate(-45deg);
-        opacity: 0;
-    }
-}
-
-.shooting-star {
-    animation: shootingStar 3s infinite;
 }
 
 /* Smooth transitions */
