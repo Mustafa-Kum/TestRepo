@@ -250,16 +250,17 @@ body::before {
 /* Main Weather */
 .main-weather {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Merkeze hizala */
     align-items: center;
     margin: 15px 0;
     gap: 12px;
     flex-shrink: 0;
+    /* DİKKAT: Küçük ekranlarda da yan yana durması için flex-direction: row varsayılan olarak kalacak */
 }
 
 .temperature-section {
     flex: 1;
-    text-align: left; /* Varsayılan olarak sola hizalı kalsın */
+    text-align: right; /* İkonun solunda durması için sağa hizala */
 }
 
 #temperature {
@@ -281,7 +282,7 @@ body::before {
 }
 
 .weather-icon-section {
-    text-align: center;
+    text-align: left; /* Sıcaklığın sağında durması için sola hizala */
     flex-shrink: 0;
 }
 
@@ -315,7 +316,7 @@ body::before {
 /* Weather Details */
 .weather-details {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* Her zaman 2 sütun */
     gap: 10px;
     margin: 12px 0;
     flex-shrink: 0;
@@ -362,7 +363,7 @@ body::before {
 /* Sun Info */
 .sun-info {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* Her zaman 2 sütun */
     margin-top: 12px;
     gap: 10px;
     flex-shrink: 0;
@@ -470,17 +471,17 @@ body::before {
         font-size: 1.1em;
     }
 
-    /* BURADA DEĞİŞİKLİK YAPILDI */
+    /* BURADA DEĞİŞİKLİKLER YAPILDI */
     .main-weather {
-        flex-direction: column; /* Alt alta sırala */
-        align-items: center; /* Ortala */
+        flex-direction: row; /* Yan yana kalsın (varsayılan) */
+        justify-content: center; /* Ortala */
+        align-items: center;
         text-align: center; /* İçeriklerini ortala */
-        gap: 15px; /* Boşluğu ayarla */
+        gap: 15px;
     }
 
     .temperature-section {
-        text-align: center; /* Sıcaklık bölümünü ortala */
-        margin-bottom: 10px; /* İkon ile arasına boşluk ekle */
+        text-align: right; /* İkonun solunda kalması için sağa hizala */
     }
 
     #temperature {
@@ -498,7 +499,7 @@ body::before {
 
     .weather-details,
     .sun-info {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr); /* Her zaman 2 sütun */
         gap: 20px;
     }
 
@@ -553,17 +554,17 @@ body::before {
         font-size: 1.2em;
     }
 
-    /* BURADA DEĞİŞİKLİK YAPILDI */
+    /* BURADA DEĞİŞİKLİKLER YAPILDI */
     .main-weather {
-        flex-direction: column; /* Alt alta sırala */
-        align-items: center; /* Ortala */
+        flex-direction: row; /* Yan yana kalsın (varsayılan) */
+        justify-content: center; /* Ortala */
+        align-items: center;
         text-align: center; /* İçeriklerini ortala */
-        gap: 20px; /* Boşluğu ayarla */
+        gap: 20px;
     }
 
     .temperature-section {
-        text-align: center; /* Sıcaklık bölümünü ortala */
-        margin-bottom: 15px; /* İkon ile arasına boşluk ekle */
+        text-align: right; /* İkonun solunda kalması için sağa hizala */
     }
 
     #temperature {
@@ -581,7 +582,7 @@ body::before {
 
     .weather-details,
     .sun-info {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr); /* Her zaman 2 sütun */
         gap: 25px;
     }
 
@@ -645,17 +646,18 @@ body::before {
         font-size: 0.8em;
     }
 
+    /* BURADA DEĞİŞİKLİKLER YAPILDI */
     .main-weather {
-        flex-direction: column; /* Zaten alt alta */
+        flex-direction: row; /* Yan yana kalsın (varsayılan) */
+        justify-content: center; /* Ortala */
+        align-items: center;
         text-align: center;
-        align-items: center; /* Ortala */
         gap: 8px;
         margin: 12px 0;
     }
 
     .temperature-section {
-        text-align: center; /* Sıcaklık bölümünü ortala */
-        margin-bottom: 8px; /* İkon ile arasına boşluk ekle */
+        text-align: right; /* İkonun solunda kalması için sağa hizala */
     }
 
     #temperature {
@@ -666,14 +668,14 @@ body::before {
         width: 65px;
         height: 65px;
     }
-
+    
     #description {
         font-size: 0.8em;
     }
 
     .weather-details,
     .sun-info {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr); /* Her zaman 2 sütun */
         gap: 8px;
         margin: 12px 0;
     }
@@ -739,17 +741,18 @@ body::before {
         font-size: 0.75em;
     }
 
+    /* BURADA DEĞİŞİKLİKLER YAPILDI */
     .main-weather {
-        flex-direction: column; /* Zaten alt alta */
+        flex-direction: row; /* Yan yana kalsın (varsayılan) */
+        justify-content: center; /* Ortala */
+        align-items: center;
         text-align: center;
-        align-items: center; /* Ortala */
         gap: 5px; /* Boşluğu azalt */
         margin: 8px 0;
     }
 
     .temperature-section {
-        text-align: center; /* Sıcaklık bölümünü ortala */
-        margin-bottom: 5px; /* İkon ile arasına boşluk ekle */
+        text-align: right; /* İkonun solunda kalması için sağa hizala */
     }
 
     #temperature {
@@ -767,6 +770,7 @@ body::before {
 
     .weather-details,
     .sun-info {
+        grid-template-columns: repeat(2, 1fr); /* Her zaman 2 sütun */
         gap: 5px;
         margin: 8px 0;
     }
