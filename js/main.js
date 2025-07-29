@@ -6,33 +6,6 @@ function checkOrientation() {
     const isLandscape = window.innerWidth > window.innerHeight;
     const isMobile = window.innerWidth <= 768;
     
-    // Force portrait on mobile devices
-    if (isMobile) {
-        // Try to lock orientation to portrait
-        if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('portrait').catch(() => {
-                console.log('Orientation lock not supported');
-            });
-        }
-        
-        // Additional orientation lock for Chrome
-        if (screen.orientation && screen.orientation.type) {
-            if (screen.orientation.type.includes('landscape')) {
-                // Force portrait by rotating the viewport
-                document.documentElement.style.transform = 'rotate(-90deg)';
-                document.documentElement.style.width = '100vh';
-                document.documentElement.style.height = '100vw';
-                document.documentElement.style.overflow = 'hidden';
-            } else {
-                // Reset if portrait
-                document.documentElement.style.transform = '';
-                document.documentElement.style.width = '';
-                document.documentElement.style.height = '';
-                document.documentElement.style.overflow = '';
-            }
-        }
-    }
-    
     if (isLandscape && isMobile) {
         // Force portrait mode on mobile landscape
         document.body.style.display = 'none';
@@ -67,6 +40,13 @@ function checkOrientation() {
                 </div>
             `;
             document.body.appendChild(warningDiv);
+        }
+        
+        // Prevent landscape orientation
+        if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('portrait').catch(() => {
+                console.log('Orientation lock not supported');
+            });
         }
     } else {
         // Portrait mode or desktop - show app
@@ -220,20 +200,6 @@ window.addEventListener('DOMContentLoaded', () => {
     // Listen for orientation changes
     window.addEventListener('orientationchange', checkOrientation);
     window.addEventListener('resize', checkOrientation);
-    
-    // Additional Chrome-specific orientation prevention
-    if (window.innerWidth <= 768) {
-        // Prevent orientation change on mobile
-        window.addEventListener('orientationchange', (e) => {
-            e.preventDefault();
-            checkOrientation();
-        });
-        
-        // Force portrait on load
-        setTimeout(checkOrientation, 100);
-        setTimeout(checkOrientation, 500);
-        setTimeout(checkOrientation, 1000);
-    }
     
     initCitySelect();
     addEventListeners();
