@@ -7,22 +7,22 @@
     <meta name="x5-orientation" content="portrait">
     <meta name="full-screen" content="yes">
     <meta name="x5-fullscreen" content="true">
-    <title>Modern Hava Durumu</title>
+    <title>Hava Durumu</title>
     
     <!-- PWA Meta Tags -->
     <meta name="description" content="Türkiye'deki şehirlerin güncel hava durumu bilgileri">
-    <meta name="theme-color" content="#16213e">
+    <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Hava Durumu">
-    <meta name="msapplication-TileColor" content="#16213e">
+    <meta name="msapplication-TileColor" content="#0f172a">
     <meta name="msapplication-config" content="/browserconfig.xml">
     
     <!-- PWA Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png">
-    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#16213e">
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#0f172a">
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
@@ -32,91 +32,141 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-cloud-sun"></i> Hava Durumu</h1>
-            <p>Türkiye'deki şehirlerin güncel hava durumu bilgileri</p>
-        </div>
-
-        <div class="search-section">
-            <div class="input-group">
-                <i class="fas fa-map-marker-alt"></i>
-                <select id="city-select">
-                    <option value="" disabled selected>Şehir seçiniz...</option>
-                </select>
-            </div>
-            <button id="get-weather-btn">
-                <i class="fas fa-search"></i>
-                <span>Hava Durumunu Getir</span>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <h1 class="app-title">Hava durumu</h1>
+            <button class="menu-button">
+                <i class="fas fa-ellipsis-v"></i>
             </button>
-        </div>
+        </header>
 
-        <div class="weather-container" id="weather-container">
-            <div class="weather-display" id="weather-display">
-                <div class="location-info">
-                    <h2 id="location">
-                        <i class="fas fa-location-dot"></i>
-                        <span id="location-text"></span>
-                    </h2>
-                    <p id="current-time"></p>
+        <!-- Main Weather Card -->
+        <main class="weather-main">
+            <div class="current-weather-card">
+                <!-- Current Weather Info -->
+                <div class="current-weather-info">
+                    <div class="current-left">
+                        <div class="current-label">Şimdi</div>
+                        <div class="current-temperature">22°C</div>
+                    </div>
+                    <div class="current-right">
+                        <div class="weather-condition">Açık</div>
+                        <div class="feels-like">Hissedilen 25°</div>
+                    </div>
                 </div>
 
-                <div class="main-weather">
-                    <div class="temperature-section">
-                        <span id="temperature"></span>
-                        <div class="feels-like">
-                            <span id="feels-like"></span>
+                <!-- Hourly Forecast -->
+                <div class="hourly-forecast">
+                    <div class="hourly-item current">
+                        <div class="hourly-temp">22°</div>
+                        <div class="hourly-icon">
+                            <i class="fas fa-moon"></i>
                         </div>
+                        <div class="hourly-time">Şimdi</div>
                     </div>
-                    <div class="weather-icon-section">
-                        <img id="weather-icon" src="" alt="Hava Durumu İkonu">
-                        <p id="description"></p>
+                    <div class="hourly-item">
+                        <div class="hourly-temp">21°</div>
+                        <div class="hourly-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="hourly-time">01:00</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-temp">20°</div>
+                        <div class="hourly-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="hourly-time">02:00</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-temp">19°</div>
+                        <div class="hourly-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="hourly-time">03:00</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-temp">19°</div>
+                        <div class="hourly-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="hourly-time">04:00</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-temp">18°</div>
+                        <div class="hourly-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="hourly-time">05:00</div>
                     </div>
                 </div>
 
-                <div class="weather-details">
-                    <div class="detail-item">
-                        <i class="fas fa-tint"></i>
-                        <span class="detail-label">Nem</span>
-                        <span id="humidity" class="detail-value">-</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-wind"></i>
-                        <span class="detail-label">Rüzgar</span>
-                        <span id="wind-speed" class="detail-value">-</span>
+                <!-- Animated Background -->
+                <div class="weather-background">
+                    <div class="landscape">
+                        <div class="hills"></div>
+                        <div class="river"></div>
+                        <div class="frog"></div>
+                        <div class="shooting-star"></div>
                     </div>
                 </div>
+            </div>
+        </main>
 
-                <div class="sun-info">
-                    <div class="sun-item">
-                        <i class="fas fa-sun"></i>
-                        <span class="sun-label">Gündoğumu</span>
-                        <span id="sunrise" class="sun-time">-</span>
-                    </div>
-                    <div class="sun-item">
+        <!-- Daily Forecast Section -->
+        <section class="daily-forecast">
+            <div class="daily-forecast-container">
+                <div class="daily-item selected">
+                    <div class="daily-day">Çar</div>
+                    <div class="daily-icon">
                         <i class="fas fa-moon"></i>
-                        <span class="sun-label">Günbatımı</span>
-                        <span id="sunset" class="sun-time">-</span>
                     </div>
+                    <div class="daily-temp">31°/18°</div>
+                </div>
+                <div class="daily-item">
+                    <div class="daily-day">Per</div>
+                    <div class="daily-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div class="daily-temp">30°/18°</div>
+                </div>
+                <div class="daily-item">
+                    <div class="daily-day">Cum</div>
+                    <div class="daily-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div class="daily-temp">27°/18°</div>
+                </div>
+                <div class="daily-item">
+                    <div class="daily-day">Cmt</div>
+                    <div class="daily-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div class="daily-temp">29°/18°</div>
+                </div>
+                <div class="daily-item">
+                    <div class="daily-day">Paz</div>
+                    <div class="daily-icon">
+                        <i class="fas fa-cloud-rain"></i>
+                    </div>
+                    <div class="daily-temp">25°/16°</div>
                 </div>
             </div>
+        </section>
 
-            <div class="forecast-section" id="forecast-section">
-                <h2><i class="fas fa-calendar-alt"></i> 5 Günlük Tahmin</h2>
-                <div class="forecast-container" id="forecast-container">
-                    <!-- Forecast cards will be dynamically added here -->
-                </div>
-            </div>
+        <!-- Hidden elements for dynamic data -->
+        <div id="weather-data" style="display: none;">
+            <div id="location-text"></div>
+            <div id="current-temp"></div>
+            <div id="current-condition"></div>
+            <div id="feels-like-temp"></div>
+            <div id="hourly-data"></div>
+            <div id="daily-data"></div>
         </div>
-
-        <div id="error-message" class="error-message">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span id="error-text"></span>
-        </div>
-
     </div>
 
-    <!-- Sıralı klasik scriptler, modül yok -->
+    <!-- Scripts -->
     <script src="js/WeatherUtils.js"></script>
     <script src="js/WeatherService.js"></script>
     <script src="js/WeatherUI.js"></script>
