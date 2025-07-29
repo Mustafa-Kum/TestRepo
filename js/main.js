@@ -398,7 +398,6 @@ const weatherUI = {
         defaultOption.value = '';
         defaultOption.textContent = 'Şehir seçiniz...';
         defaultOption.disabled = true;
-        defaultOption.selected = true;
         citySelect.appendChild(defaultOption);
         
         turkishCities.forEach(city => {
@@ -407,6 +406,9 @@ const weatherUI = {
             option.textContent = city;
             citySelect.appendChild(option);
         });
+        
+        // Set Ankara as default selected city
+        citySelect.value = 'Ankara';
     }
 };
 
@@ -471,9 +473,9 @@ function loadWeatherForCity(city) {
     );
 }
 
-// Load default weather (Istanbul)
+// Load default weather (Ankara)
 function loadDefaultWeather() {
-    loadWeatherForCity('Istanbul');
+    loadWeatherForCity('Ankara');
 }
 
 // Initialize app
