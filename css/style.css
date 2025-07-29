@@ -1268,6 +1268,64 @@ body::before {
     max-height: calc(100vh - 200px);
 }
 
+/* Forecast Dropdown Styles */
+.forecast-dropdown-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.forecast-day-select {
+    width: 100%;
+    padding: 14px 14px 14px 45px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1em;
+    font-weight: 500;
+    background: #fff;
+    color: #2d3748;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="9" viewBox="0 0 12 8"><path fill="%23a0aec0" d="M6 8L0 2l1.4-1.4L6 5.2l4.6-4.6L12 2z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    position: relative;
+}
+
+.forecast-day-select::before {
+    content: '\f073';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a0aec0;
+    font-size: 1.1em;
+    pointer-events: none;
+}
+
+.forecast-day-select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+}
+
+.forecast-day-select option {
+    padding: 10px;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.forecast-details-container {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
 .forecast-section.show {
     transform: translateY(0);
     opacity: 1;
@@ -1435,6 +1493,20 @@ body::before {
         margin-bottom: 12px;
     }
     
+    .forecast-day-select {
+        padding: 12px 12px 12px 40px;
+        font-size: 0.9em;
+    }
+    
+    .forecast-day-select::before {
+        left: 12px;
+        font-size: 1em;
+    }
+    
+    .forecast-details-container {
+        min-height: 150px;
+    }
+    
     .forecast-day-card {
         padding: 12px;
     }
@@ -1498,6 +1570,20 @@ body::before {
         margin-bottom: 15px;
     }
     
+    .forecast-day-select {
+        padding: 16px 16px 16px 48px;
+        font-size: 1.1em;
+    }
+    
+    .forecast-day-select::before {
+        left: 18px;
+        font-size: 1.2em;
+    }
+    
+    .forecast-details-container {
+        min-height: 180px;
+    }
+    
     .forecast-day-card {
         padding: 15px;
     }
@@ -1521,6 +1607,20 @@ body::before {
     .forecast-section h2 {
         font-size: 1.3em;
         margin-bottom: 15px;
+    }
+    
+    .forecast-day-select {
+        padding: 18px 18px 18px 50px;
+        font-size: 1.2em;
+    }
+    
+    .forecast-day-select::before {
+        left: 20px;
+        font-size: 1.3em;
+    }
+    
+    .forecast-details-container {
+        min-height: 200px;
     }
     
     .forecast-day-card {

@@ -98,22 +98,25 @@ WeatherUI.prototype.displayForecastData = function(data) {
         const today = new Date();
         const todayKey = today.toISOString().split('T')[0];
         
-        dailyForecasts.forEach((dayForecast, index) => {
-            if (index >= 5) return; // Sadece 5 gün göster
+        // Gelecek günleri filtrele
+        const futureForecasts = dailyForecasts.filter((dayForecast, index) => {
+            if (index >= 5) return false; // Sadece 5 gün göster
             
-            // İlk forecast'un tarihini kontrol et
             const firstForecast = dayForecast[0];
             const forecastDate = new Date(firstForecast.dt * 1000);
             const forecastKey = forecastDate.toISOString().split('T')[0];
             
-            // Bugünün forecast'unu atla
-            if (forecastKey === todayKey) {
-                return;
-            }
-            
-            const dayCard = this.createDayForecastCard(dayForecast);
-            forecastContainer.appendChild(dayCard);
+            return forecastKey !== todayKey; // Bugünün forecast'unu atla
         });
+        
+        // Dropdown menü oluştur
+        const dropdownContainer = this.createForecastDropdown(futureForecasts);
+        forecastContainer.appendChild(dropdownContainer);
+        
+        // İlk günü varsayılan olarak göster
+        if (futureForecasts.length > 0) {
+            this.showSelectedDayForecast(futureForecasts[0]);
+        }
         
         // Forecast section'ı göster
         if (this.dom.forecastSection) {
@@ -222,6 +225,66 @@ WeatherUI.prototype.createHourlyForecast = function(dayForecasts) {
             </div>
         `;
     }).join('');
+};
+
+WeatherUI.prototype.createForecastDropdown = function(futureForecasts) {
+    const dropdownContainer = document.createElement('div');
+    dropdownContainer.className = 'forecast-dropdown-container';
+    
+    // Dropdown select oluştur
+    const select = document.createElement('select');
+    select.className = 'forecast-day-select';
+    select.id = 'forecast-day-select';
+    
+    // Varsayılan seçenek
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Gün seçiniz...';
+    defaultOption.disabled = true;
+    select.appendChild(defaultOption);
+    
+    // Gün seçeneklerini ekle
+    futureForecasts.forEach((dayForecast, index) => {
+        const firstForecast = dayForecast[0];
+        const date = new Date(firstForecast.dt * 1000);
+        const dayName = this.utils.getDayName(date.getDay());
+        const dateStr = date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
+        
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${dayName} ${dateStr}`;
+        select.appendChild(option);
+    });
+    
+    // Seçim değiştiğinde günü göster
+    select.addEventListener('change', (e) => {
+        const selectedIndex = parseInt(e.target.value);
+        if (selectedIndex >= 0 && selectedIndex < futureForecasts.length) {
+            this.showSelectedDayForecast(futureForecasts[selectedIndex]);
+        }
+    });
+    
+    dropdownContainer.appendChild(select);
+    
+    // Seçilen günün detaylarını gösterecek container
+    const detailsContainer = document.createElement('div');
+    detailsContainer.className = 'forecast-details-container';
+    detailsContainer.id = 'forecast-details-container';
+    dropdownContainer.appendChild(detailsContainer);
+    
+    return dropdownContainer;
+};
+
+WeatherUI.prototype.showSelectedDayForecast = function(dayForecasts) {
+    const detailsContainer = document.getElementById('forecast-details-container');
+    if (!detailsContainer) return;
+    
+    // Container'ı temizle
+    detailsContainer.innerHTML = '';
+    
+    // Seçilen günün kartını oluştur
+    const dayCard = this.createDayForecastCard(dayForecasts);
+    detailsContainer.appendChild(dayCard);
 };
 
 WeatherUI.prototype.populateCitySelect = function(citySelect, turkishCities) {
