@@ -1,6 +1,7 @@
 // WeatherService.js
 window.WeatherService = function(apiKey, baseUrl, iconBaseUrl) {
-    this.BASE_URL = baseUrl;
+    this.API_KEY = apiKey;
+    this.BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
     this.ICON_BASE_URL = iconBaseUrl;
 };
 
@@ -9,9 +10,9 @@ window.WeatherService.prototype.fetchWeatherByCity = async function(city) {
         throw new Error('Lütfen bir şehir seçin.');
     }
     
-    const url = `${this.BASE_URL}?q=${encodeURIComponent(city)}`;
-    console.log('[DEBUG] WeatherService - BASE_URL:', this.BASE_URL);
-    console.log('[DEBUG] WeatherService - Constructed URL:', url);
+    // Direkt OpenWeatherMap API'sine istek at
+    const url = `${this.BASE_URL}?q=${encodeURIComponent(city)}&appid=${this.API_KEY}&units=metric&lang=tr`;
+    console.log('[DEBUG] WeatherService - Direct API call:', url);
     
     const response = await fetch(url);
     
@@ -29,11 +30,8 @@ window.WeatherService.prototype.fetchWeatherByCity = async function(city) {
                 case 429:
                     errorMessage = 'Çok fazla istek gönderildi. Lütfen biraz bekleyin.';
                     break;
-                case 500:
-                    errorMessage = errorData.error || 'Sunucu hatası.';
-                    break;
                 default:
-                    errorMessage = errorData.error || errorData.message || errorMessage;
+                    errorMessage = errorData.message || errorMessage;
             }
         } catch (e) {
             console.error('Error parsing error response:', e);
@@ -66,7 +64,7 @@ window.WeatherService.prototype.getCurrentLocationWeather = function(setButtonLo
         async (position) => {
             try {
                 const { latitude, longitude } = position.coords;
-                const url = `${this.BASE_URL}?lat=${latitude}&lon=${longitude}`;
+                const url = `${this.BASE_URL}?lat=${latitude}&lon=${longitude}&appid=${this.API_KEY}&units=metric&lang=tr`;
                 const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error('Konum bilgisi alınamadı.');

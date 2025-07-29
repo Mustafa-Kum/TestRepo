@@ -2,12 +2,11 @@
 // import/export yok, global fonksiyonlar ve nesneler kullanılıyor
 
 // API Config
-// const API_KEY = 'afa97fb4861b31e96a91c1ff7f2b3255';
-const BASE_URL = '/netlify/functions/weather';
+const API_KEY = 'afa97fb4861b31e96a91c1ff7f2b3255'; // Buraya API key'inizi yazın
 const ICON_BASE_URL = 'https://openweathermap.org/img/wn/';
 
-// Debug: BASE_URL'yi kontrol et
-console.log('[DEBUG] BASE_URL:', BASE_URL);
+// Debug: API key kontrolü
+console.log('[DEBUG] API_KEY:', API_KEY ? 'Set' : 'Not set');
 
 // WeatherUtils saf modül olarak kullanılıyor
 // Eğer WeatherUtils globalde yoksa, local değişkeni kullan
@@ -32,7 +31,7 @@ const dom = {
     errorText: document.getElementById('error-text')
 };
 
-const weatherService = new window.WeatherService(undefined, BASE_URL, ICON_BASE_URL);
+const weatherService = new window.WeatherService(API_KEY, null, ICON_BASE_URL);
 const weatherUI = new WeatherUI(dom, utils);
 
 // Şehir select doldur
