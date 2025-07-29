@@ -1,10 +1,13 @@
 // main.js
 // import/export yok, global fonksiyonlar ve nesneler kullanılıyor
 
-// Orientation control
+// Orientation control - Force portrait only
 function checkOrientation() {
-    if (window.innerWidth > window.innerHeight) {
-        // Landscape mode - show warning
+    const isLandscape = window.innerWidth > window.innerHeight;
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isLandscape && isMobile) {
+        // Force portrait mode on mobile landscape
         document.body.style.display = 'none';
         const warning = document.getElementById('orientation-warning');
         if (!warning) {
@@ -38,8 +41,15 @@ function checkOrientation() {
             `;
             document.body.appendChild(warningDiv);
         }
+        
+        // Prevent landscape orientation
+        if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('portrait').catch(() => {
+                console.log('Orientation lock not supported');
+            });
+        }
     } else {
-        // Portrait mode - hide warning and show app
+        // Portrait mode or desktop - show app
         document.body.style.display = 'block';
         const warning = document.getElementById('orientation-warning');
         if (warning) {

@@ -1,7 +1,11 @@
 /* Modern Hava Durumu Uygulaması CSS */
 
-/* Portrait Only Styles */
-@media screen and (orientation: landscape) {
+/* Portrait Only Styles - Force portrait on mobile */
+@media screen and (orientation: landscape) and (max-width: 768px) {
+    body {
+        display: none !important;
+    }
+    
     body::before {
         content: "Lütfen telefonu dikey konuma çevirin";
         position: fixed;
@@ -21,6 +25,17 @@
         padding: 20px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+    
+    body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        z-index: 9998;
+    }
 }
 
 * {
@@ -34,9 +49,10 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 15px; /* Varsayılan padding */
+    padding-top: 5vh;
     position: relative;
     overflow-y: auto; 
     overflow-x: hidden;
@@ -70,12 +86,14 @@ body::before {
     max-width: 480px;
     position: relative;
     overflow: hidden; 
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
     min-height: auto; 
     max-height: calc(100vh - 30px); /* Varsayılan ekran yüksekliği ayarı */
     overflow-y: auto; 
+    transform: translateY(0);
+    will-change: transform;
 }
 
 .container::before {
