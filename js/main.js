@@ -1,6 +1,53 @@
 // main.js
 // import/export yok, global fonksiyonlar ve nesneler kullanılıyor
 
+// Orientation control
+function checkOrientation() {
+    if (window.innerWidth > window.innerHeight) {
+        // Landscape mode - show warning
+        document.body.style.display = 'none';
+        const warning = document.getElementById('orientation-warning');
+        if (!warning) {
+            const warningDiv = document.createElement('div');
+            warningDiv.id = 'orientation-warning';
+            warningDiv.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                    color: white;
+                    font-size: 1.2em;
+                    font-weight: 600;
+                    text-align: center;
+                    padding: 20px;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                ">
+                    <div>
+                        <i class="fas fa-mobile-alt" style="font-size: 2em; margin-bottom: 15px; display: block;"></i>
+                        <p>Lütfen telefonu dikey konuma çevirin</p>
+                        <p style="font-size: 0.8em; margin-top: 10px; opacity: 0.8;">Uygulama sadece dikey modda çalışır</p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(warningDiv);
+        }
+    } else {
+        // Portrait mode - hide warning and show app
+        document.body.style.display = 'block';
+        const warning = document.getElementById('orientation-warning');
+        if (warning) {
+            warning.remove();
+        }
+    }
+}
+
 // API Config - Netlify function kullan
 const BASE_URL = '/.netlify/functions/weather';
 const ICON_BASE_URL = 'https://openweathermap.org/img/wn/';
@@ -137,6 +184,13 @@ function addEventListeners() {
 
 // Sayfa yüklendiğinde başlat
 window.addEventListener('DOMContentLoaded', () => {
+    // Check orientation on load
+    checkOrientation();
+    
+    // Listen for orientation changes
+    window.addEventListener('orientationchange', checkOrientation);
+    window.addEventListener('resize', checkOrientation);
+    
     initCitySelect();
     addEventListeners();
     // İsterseniz varsayılan şehir için ilk yüklemede hava durumu getirebilirsiniz
