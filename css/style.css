@@ -199,12 +199,8 @@ body::before {
     transform: translateY(20px);
     opacity: 0;
     display: none;
-    flex: 1; 
     flex-direction: column;
-    min-height: 0; 
-    overflow-y: auto;
-    overflow-x: hidden;
-    max-height: calc(100vh - 200px);
+    overflow: hidden;
 }
 
 .weather-display.show {
@@ -481,8 +477,8 @@ body::before {
     }
 
     .weather-display {
-        padding: 15px;
-        margin-top: 15px;
+        padding: 12px;
+        margin-top: 12px;
     }
 
     .location-info {
@@ -670,8 +666,8 @@ body::before {
     }
 
     .weather-display {
-        padding: 20px;
-        margin-top: 20px;
+        padding: 12px;
+        margin-top: 12px;
     }
 
     .main-weather {
@@ -1015,36 +1011,10 @@ body::before {
     background: rgba(102, 126, 234, 0.6);
 }
 
-/* Custom scrollbar for weather display */
-.weather-display::-webkit-scrollbar {
-    width: 6px;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.weather-display::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-}
-
-.weather-display::-webkit-scrollbar-thumb {
-    background: rgba(102, 126, 234, 0.5);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.weather-display::-webkit-scrollbar-thumb:hover {
-    background: rgba(102, 126, 234, 0.7);
-}
-
 /* Firefox scrollbar styling */
 .container {
     scrollbar-width: thin;
     scrollbar-color: rgba(102, 126, 234, 0.4) rgba(255, 255, 255, 0.05);
-}
-
-.weather-display {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(102, 126, 234, 0.5) rgba(255, 255, 255, 0.05);
 }
 
 /* PWA Specific Styles */
