@@ -42,8 +42,13 @@ exports.handler = async function(event, context) {
     };
   }
 
-  const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
   const params = event.queryStringParameters || {};
+  const isForecast = params.forecast === 'true';
+  
+  // API endpoint seçimi
+  const BASE_URL = isForecast 
+    ? 'https://api.openweathermap.org/data/2.5/forecast'
+    : 'https://api.openweathermap.org/data/2.5/weather';
   
   let url = `${BASE_URL}?appid=${API_KEY}&units=metric&lang=tr`;
 

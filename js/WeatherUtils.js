@@ -45,6 +45,10 @@ const WeatherUtils = {
     translateWeatherDescription: function(description) {
         return WeatherUtils.weatherTranslations[description.toLowerCase()] || description;
     },
+    getDayName: function(dayIndex) {
+        const days = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+        return days[dayIndex];
+    },
     turkishCities: [
         "Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin",
         "Aydın", "Balıkesir", "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur", "Bursa", "Çanakkale",

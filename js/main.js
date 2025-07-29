@@ -17,6 +17,8 @@ const dom = {
     citySelect: document.getElementById('city-select'),
     getWeatherBtn: document.getElementById('get-weather-btn'),
     weatherDisplay: document.getElementById('weather-display'),
+    forecastSection: document.getElementById('forecast-section'),
+    forecastContainer: document.getElementById('forecast-container'),
     errorMessage: document.getElementById('error-message'),
     locationText: document.getElementById('location-text'),
     currentTime: document.getElementById('current-time'),
@@ -44,15 +46,19 @@ function addEventListeners() {
     dom.getWeatherBtn.addEventListener('click', () => {
         const selectedCity = dom.citySelect.value;
         console.log('[DEBUG] Butona basıldı, seçilen şehir:', selectedCity);
-        weatherService.fetchWeatherWithLoading(
+        weatherService.fetchWeatherAndForecastWithLoading(
             selectedCity,
             (isLoading) => {
                 console.log('[DEBUG] setButtonLoading:', isLoading);
                 weatherUI.setButtonLoading(isLoading);
             },
             (data) => {
-                console.log('[DEBUG] API verisi geldi:', data);
+                console.log('[DEBUG] Current weather API verisi geldi:', data);
                 weatherUI.displayWeatherData(data);
+            },
+            (forecastData) => {
+                console.log('[DEBUG] Forecast API verisi geldi:', forecastData);
+                weatherUI.displayForecastData(forecastData);
             },
             (msg) => {
                 console.log('[DEBUG] Hata oluştu:', msg);
@@ -69,15 +75,19 @@ function addEventListeners() {
         const selectedCity = dom.citySelect.value;
         console.log('[DEBUG] Şehir değişti, yeni şehir:', selectedCity);
         if (selectedCity) {
-            weatherService.fetchWeatherWithLoading(
+            weatherService.fetchWeatherAndForecastWithLoading(
                 selectedCity,
                 (isLoading) => {
                     console.log('[DEBUG] setButtonLoading:', isLoading);
                     weatherUI.setButtonLoading(isLoading);
                 },
                 (data) => {
-                    console.log('[DEBUG] API verisi geldi:', data);
+                    console.log('[DEBUG] Current weather API verisi geldi:', data);
                     weatherUI.displayWeatherData(data);
+                },
+                (forecastData) => {
+                    console.log('[DEBUG] Forecast API verisi geldi:', forecastData);
+                    weatherUI.displayForecastData(forecastData);
                 },
                 (msg) => {
                     console.log('[DEBUG] Hata oluştu:', msg);
@@ -96,15 +106,19 @@ function addEventListeners() {
             const selectedCity = dom.citySelect.value;
             console.log('[DEBUG] Enter ile şehir seçildi:', selectedCity);
             if (selectedCity) {
-                weatherService.fetchWeatherWithLoading(
+                weatherService.fetchWeatherAndForecastWithLoading(
                     selectedCity,
                     (isLoading) => {
                         console.log('[DEBUG] setButtonLoading:', isLoading);
                         weatherUI.setButtonLoading(isLoading);
                     },
                     (data) => {
-                        console.log('[DEBUG] API verisi geldi:', data);
+                        console.log('[DEBUG] Current weather API verisi geldi:', data);
                         weatherUI.displayWeatherData(data);
+                    },
+                    (forecastData) => {
+                        console.log('[DEBUG] Forecast API verisi geldi:', forecastData);
+                        weatherUI.displayForecastData(forecastData);
                     },
                     (msg) => {
                         console.log('[DEBUG] Hata oluştu:', msg);

@@ -44,11 +44,66 @@ window.WeatherService.prototype.fetchWeatherByCity = async function(city) {
     return await response.json();
 };
 
+window.WeatherService.prototype.fetchForecastByCity = async function(city) {
+    if (!city || city.trim() === '') {
+        throw new Error('Lütfen bir şehir seçin.');
+    }
+    
+    const url = `${this.BASE_URL}?q=${encodeURIComponent(city)}&forecast=true`;
+    console.log('[DEBUG] WeatherService - Forecast URL:', url);
+    
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+        let errorMessage = 'Hava durumu tahmini alınamadı.';
+        try {
+            const errorData = await response.json();
+            switch (response.status) {
+                case 404:
+                    errorMessage = 'Şehir bulunamadı. Lütfen geçerli bir şehir adı girin.';
+                    break;
+                case 401:
+                    errorMessage = 'API anahtarı geçersiz.';
+                    break;
+                case 429:
+                    errorMessage = 'Çok fazla istek gönderildi. Lütfen biraz bekleyin.';
+                    break;
+                case 500:
+                    errorMessage = errorData.error || 'Sunucu hatası.';
+                    break;
+                default:
+                    errorMessage = errorData.error || errorData.message || errorMessage;
+            }
+        } catch (e) {
+            console.error('Error parsing error response:', e);
+        }
+        throw new Error(errorMessage);
+    }
+    
+    return await response.json();
+};
+
 window.WeatherService.prototype.fetchWeatherWithLoading = async function(city, setButtonLoading, displayWeatherData, showError, hideAll) {
     setButtonLoading(true);
     try {
         const data = await this.fetchWeatherByCity(city);
         displayWeatherData(data);
+    } catch (error) {
+        showError(error.message);
+    } finally {
+        setButtonLoading(false);
+    }
+};
+
+window.WeatherService.prototype.fetchWeatherAndForecastWithLoading = async function(city, setButtonLoading, displayWeatherData, displayForecastData, showError, hideAll) {
+    setButtonLoading(true);
+    try {
+        const [currentData, forecastData] = await Promise.all([
+            this.fetchWeatherByCity(city),
+            this.fetchForecastByCity(city)
+        ]);
+        displayWeatherData(currentData);
+        displayForecastData(forecastData);
     } catch (error) {
         showError(error.message);
     } finally {

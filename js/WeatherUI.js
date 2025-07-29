@@ -20,6 +20,7 @@ WeatherUI.prototype.showError = function(message) {
 
 WeatherUI.prototype.hideAll = function() {
     this.dom.weatherDisplay.classList.remove('show');
+    this.dom.forecastSection.classList.remove('show');
     this.dom.errorMessage.classList.remove('show');
 };
 
@@ -72,6 +73,141 @@ WeatherUI.prototype.displayWeatherData = function(data) {
         console.error('Veri gösterilirken hata:', error);
         this.showError('Hava durumu verileri gösterilirken bir hata oluştu.');
     }
+};
+
+WeatherUI.prototype.displayForecastData = function(data) {
+    if (!data || !data.list) {
+        console.error('Forecast verisi alınamadı:', data);
+        return;
+    }
+    
+    try {
+        const forecastContainer = this.dom.forecastContainer;
+        if (!forecastContainer) {
+            console.error('Forecast container bulunamadı');
+            return;
+        }
+        
+        // Forecast container'ı temizle
+        forecastContainer.innerHTML = '';
+        
+        // 5 günlük tahmin için günlük gruplar oluştur
+        const dailyForecasts = this.groupForecastsByDay(data.list);
+        
+        dailyForecasts.forEach((dayForecast, index) => {
+            if (index >= 5) return; // Sadece 5 gün göster
+            
+            const dayCard = this.createDayForecastCard(dayForecast);
+            forecastContainer.appendChild(dayCard);
+        });
+        
+        // Forecast section'ı göster
+        if (this.dom.forecastSection) {
+            this.dom.forecastSection.classList.add('show');
+        }
+        
+    } catch (error) {
+        console.error('Forecast verisi gösterilirken hata:', error);
+    }
+};
+
+WeatherUI.prototype.groupForecastsByDay = function(forecastList) {
+    const dailyGroups = {};
+    
+    forecastList.forEach(forecast => {
+        const date = new Date(forecast.dt * 1000);
+        const dayKey = date.toISOString().split('T')[0]; // YYYY-MM-DD formatı
+        
+        if (!dailyGroups[dayKey]) {
+            dailyGroups[dayKey] = [];
+        }
+        dailyGroups[dayKey].push(forecast);
+    });
+    
+    return Object.values(dailyGroups);
+};
+
+WeatherUI.prototype.createDayForecastCard = function(dayForecasts) {
+    const card = document.createElement('div');
+    card.className = 'forecast-day-card';
+    
+    if (dayForecasts.length === 0) return card;
+    
+    const firstForecast = dayForecasts[0];
+    const date = new Date(firstForecast.dt * 1000);
+    const dayName = this.utils.getDayName(date.getDay());
+    const dateStr = date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
+    
+    // Günlük ortalama değerler hesapla
+    const avgTemp = Math.round(dayForecasts.reduce((sum, f) => sum + f.main.temp, 0) / dayForecasts.length);
+    const avgHumidity = Math.round(dayForecasts.reduce((sum, f) => sum + f.main.humidity, 0) / dayForecasts.length);
+    const avgWindSpeed = Math.round(dayForecasts.reduce((sum, f) => sum + (f.wind?.speed || 0), 0) / dayForecasts.length);
+    
+    // En yaygın hava durumu ikonu
+    const weatherIcons = dayForecasts.map(f => f.weather[0]?.icon).filter(Boolean);
+    const mostCommonIcon = this.getMostCommonIcon(weatherIcons);
+    
+    card.innerHTML = `
+        <div class="forecast-day-header">
+            <h3>${dayName}</h3>
+            <span class="forecast-date">${dateStr}</span>
+        </div>
+        <div class="forecast-day-main">
+            <img src="https://openweathermap.org/img/wn/${mostCommonIcon}@2x.png" alt="Hava Durumu" class="forecast-icon">
+            <div class="forecast-temp">${avgTemp}°C</div>
+        </div>
+        <div class="forecast-day-details">
+            <div class="forecast-detail">
+                <i class="fas fa-tint"></i>
+                <span>${avgHumidity}%</span>
+            </div>
+            <div class="forecast-detail">
+                <i class="fas fa-wind"></i>
+                <span>${avgWindSpeed} m/s</span>
+            </div>
+        </div>
+        <div class="forecast-hourly">
+            ${this.createHourlyForecast(dayForecasts)}
+        </div>
+    `;
+    
+    return card;
+};
+
+WeatherUI.prototype.getMostCommonIcon = function(icons) {
+    const iconCount = {};
+    icons.forEach(icon => {
+        iconCount[icon] = (iconCount[icon] || 0) + 1;
+    });
+    
+    let mostCommon = '01d'; // Varsayılan
+    let maxCount = 0;
+    
+    Object.entries(iconCount).forEach(([icon, count]) => {
+        if (count > maxCount) {
+            maxCount = count;
+            mostCommon = icon;
+        }
+    });
+    
+    return mostCommon;
+};
+
+WeatherUI.prototype.createHourlyForecast = function(dayForecasts) {
+    return dayForecasts.map(forecast => {
+        const time = new Date(forecast.dt * 1000);
+        const hour = time.getHours();
+        const temp = Math.round(forecast.main.temp);
+        const icon = forecast.weather[0]?.icon || '01d';
+        
+        return `
+            <div class="forecast-hour">
+                <span class="hour-time">${hour}:00</span>
+                <img src="https://openweathermap.org/img/wn/${icon}.png" alt="Hava Durumu" class="hour-icon">
+                <span class="hour-temp">${temp}°</span>
+            </div>
+        `;
+    }).join('');
 };
 
 WeatherUI.prototype.populateCitySelect = function(citySelect, turkishCities) {
