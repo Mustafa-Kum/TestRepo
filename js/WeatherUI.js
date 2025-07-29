@@ -46,7 +46,9 @@ WeatherUI.prototype.displayWeatherData = function(data) {
     }
     try {
         const { name, main, weather, wind, sys } = data;
-        this.dom.locationText.textContent = `${name}, ${sys.country}`;
+        // Country bilgisi yoksa sadece şehir adını göster
+        const locationText = sys?.country ? `${name}, ${sys.country}` : name;
+        this.dom.locationText.textContent = locationText;
         this.dom.currentTime.textContent = this.utils.getCurrentTime();
         this.dom.temperature.textContent = `${Math.round(main.temp)}°`;
         this.dom.feelsLike.textContent = `Hissedilen: ${Math.round(main.feels_like)}°C`;

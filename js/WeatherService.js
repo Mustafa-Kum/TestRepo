@@ -9,41 +9,39 @@ window.WeatherService.prototype.fetchWeatherByCity = async function(city) {
         throw new Error('Lütfen bir şehir seçin.');
     }
     
-    try {
-        // Önce Netlify function'ı dene
-        const url = `${this.BASE_URL}?q=${encodeURIComponent(city)}`;
-        console.log('[DEBUG] WeatherService - BASE_URL:', this.BASE_URL);
-        console.log('[DEBUG] WeatherService - Constructed URL:', url);
-        
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('API hatası');
-        }
-        return await response.json();
-    } catch (error) {
-        console.log('[DEBUG] Netlify function hatası, mock data kullanılıyor');
-        
-        // Mock data döndür
-        return {
-            name: city,
-            main: {
-                temp: Math.floor(Math.random() * 30) + 5, // 5-35°C arası
-                feels_like: Math.floor(Math.random() * 30) + 5,
-                humidity: Math.floor(Math.random() * 40) + 30 // 30-70% arası
-            },
-            weather: [{
-                description: "Açık",
-                icon: "01d"
-            }],
-            wind: {
-                speed: Math.floor(Math.random() * 10) + 1 // 1-10 m/s arası
-            },
-            sys: {
-                sunrise: 1640995200,
-                sunset: 1641038400
+    const url = `${this.BASE_URL}?q=${encodeURIComponent(city)}`;
+    console.log('[DEBUG] WeatherService - BASE_URL:', this.BASE_URL);
+    console.log('[DEBUG] WeatherService - Constructed URL:', url);
+    
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+        let errorMessage = 'Hava durumu bilgileri alınamadı.';
+        try {
+            const errorData = await response.json();
+            switch (response.status) {
+                case 404:
+                    errorMessage = 'Şehir bulunamadı. Lütfen geçerli bir şehir adı girin.';
+                    break;
+                case 401:
+                    errorMessage = 'API anahtarı geçersiz.';
+                    break;
+                case 429:
+                    errorMessage = 'Çok fazla istek gönderildi. Lütfen biraz bekleyin.';
+                    break;
+                case 500:
+                    errorMessage = errorData.error || 'Sunucu hatası.';
+                    break;
+                default:
+                    errorMessage = errorData.error || errorData.message || errorMessage;
             }
-        };
+        } catch (e) {
+            console.error('Error parsing error response:', e);
+        }
+        throw new Error(errorMessage);
     }
+    
+    return await response.json();
 };
 
 window.WeatherService.prototype.fetchWeatherWithLoading = async function(city, setButtonLoading, displayWeatherData, showError, hideAll) {
