@@ -49,10 +49,9 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     padding: 15px; /* Varsayılan padding */
-    padding-top: 5vh;
     position: relative;
     overflow-y: auto; 
     overflow-x: hidden;
@@ -90,10 +89,11 @@ body::before {
     display: flex;
     flex-direction: column;
     min-height: auto; 
-    max-height: calc(100vh - 30px); /* Varsayılan ekran yüksekliği ayarı */
+    max-height: calc(100vh - 40px); /* Ekran yüksekliği ayarı */
     overflow-y: auto; 
     transform: translateY(0);
     will-change: transform;
+    margin: auto;
 }
 
 .container::before {
