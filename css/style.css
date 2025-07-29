@@ -1249,3 +1249,120 @@ body::before {
         min-height: 44px;
     }
 }
+
+/* Android-specific optimizations */
+.android-device {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.android-device .container {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+.android-device .install-btn,
+.android-device .dismiss-btn,
+.android-device #get-weather-btn {
+    min-height: 44px; /* Android touch target minimum size */
+    touch-action: manipulation;
+}
+
+.android-device #city-select {
+    min-height: 44px;
+    touch-action: manipulation;
+}
+
+/* Android Chrome specific optimizations */
+.android-chrome {
+    /* Optimize for Chrome on Android */
+}
+
+.android-chrome .container {
+    /* Ensure proper rendering on Chrome */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Prevent zoom on Android */
+@media screen and (max-width: 480px) {
+    .android-device input,
+    .android-device select,
+    .android-device textarea {
+        font-size: 16px; /* Prevents zoom on iOS and Android */
+    }
+}
+
+/* Android status bar optimization */
+@media screen and (display-mode: standalone) {
+    .android-device {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
+/* Android notification badge optimization */
+.android-device .status-message {
+    z-index: 1000;
+    position: fixed;
+    top: env(safe-area-inset-top, 0);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Android gesture optimization */
+.android-device .weather-display {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Android performance optimizations */
+.android-device * {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+/* Android keyboard handling */
+.android-device .container {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+}
+
+/* Android specific button states */
+.android-device .install-btn:active,
+.android-device .dismiss-btn:active,
+.android-device #get-weather-btn:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
+/* Android specific focus states */
+.android-device .install-btn:focus,
+.android-device .dismiss-btn:focus,
+.android-device #get-weather-btn:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* Android specific scrollbar */
+.android-device .container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.android-device .container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.android-device .container::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.5);
+    border-radius: 3px;
+}
+
+.android-device .container::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.7);
+}
