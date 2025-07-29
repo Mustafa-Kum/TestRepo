@@ -1,283 +1,40 @@
 /* Modern Hava Durumu Uygulaması CSS */
 
-/* Landscape Responsive Layout */
-@media screen and (orientation: landscape) {
-    body {
-        padding: 10px;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .container {
-        max-width: 90vw;
-        max-height: 90vh;
-        padding: 20px;
-        flex-direction: row;
-        gap: 20px;
-    }
-    
-    .header {
-        flex: 0 0 200px;
-        margin-bottom: 0;
-        text-align: left;
-    }
-    
-    .header h1 {
-        font-size: 1.5em;
-        margin-bottom: 5px;
-    }
-    
-    .header p {
-        font-size: 0.8em;
-    }
-    
-    .search-section {
-        flex: 0 0 200px;
-        margin-bottom: 0;
-    }
-    
-    .weather-container {
-        flex: 1;
-        max-height: 80vh;
-        overflow-y: auto;
-    }
-    
-    .weather-display {
-        padding: 15px;
-        margin-bottom: 15px;
-    }
-    
-    .main-weather {
-        flex-direction: row;
-        align-items: center;
-        gap: 20px;
-    }
-    
-    .temperature-section {
-        flex: 0 0 auto;
-    }
-    
-    .weather-icon-section {
-        flex: 0 0 auto;
-    }
-    
-    .weather-details {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-    
-    .forecast-section {
-        padding: 15px 0;
-    }
-    
-    .forecast-day-select {
-        font-size: 0.9em;
-        padding: 8px 12px;
-    }
-    
-    .forecast-day-card {
-        padding: 15px;
-    }
-    
-    .forecast-hourly {
-        max-height: 200px;
-    }
-}
-
-/* Mobile Landscape - Compact Layout */
+/* Portrait Only Styles - Force portrait on mobile */
 @media screen and (orientation: landscape) and (max-width: 768px) {
     body {
-        padding: 5px;
+        display: none !important;
     }
     
-    .container {
-        max-width: 95vw;
-        max-height: 95vh;
-        padding: 15px;
-        gap: 15px;
-    }
-    
-    .header {
-        flex: 0 0 150px;
-    }
-    
-    .header h1 {
+    body::before {
+        content: "Lütfen telefonu dikey konuma çevirin";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        color: white;
         font-size: 1.2em;
+        font-weight: 600;
+        text-align: center;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
-    .header p {
-        font-size: 0.7em;
-    }
-    
-    .search-section {
-        flex: 0 0 150px;
-    }
-    
-    .input-group {
-        margin-bottom: 10px;
-    }
-    
-    .input-group i {
-        font-size: 0.9em;
-    }
-    
-    #city-select {
-        font-size: 0.8em;
-        padding: 8px 10px;
-    }
-    
-    #get-weather-btn {
-        font-size: 0.8em;
-        padding: 8px 12px;
-    }
-    
-    .weather-container {
-        max-height: 85vh;
-    }
-    
-    .weather-display {
-        padding: 10px;
-        margin-bottom: 10px;
-    }
-    
-    .location-info {
-        margin-bottom: 10px;
-    }
-    
-    #location {
-        font-size: 1em;
-    }
-    
-    #current-time {
-        font-size: 0.8em;
-    }
-    
-    .main-weather {
-        gap: 15px;
-    }
-    
-    #temperature {
-        font-size: 2em;
-    }
-    
-    #weather-icon {
-        font-size: 2.5em;
-    }
-    
-    #description {
-        font-size: 0.9em;
-    }
-    
-    .weather-details {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-        margin-top: 10px;
-    }
-    
-    .detail-item {
-        padding: 8px;
-    }
-    
-    .detail-item i {
-        font-size: 0.8em;
-    }
-    
-    .detail-label {
-        font-size: 0.7em;
-    }
-    
-    .detail-value {
-        font-size: 0.8em;
-    }
-    
-    .sun-info {
-        margin-top: 10px;
-        gap: 10px;
-    }
-    
-    .sun-item {
-        padding: 8px;
-    }
-    
-    .sun-item i {
-        font-size: 0.8em;
-    }
-    
-    .sun-label {
-        font-size: 0.7em;
-    }
-    
-    .sun-time {
-        font-size: 0.8em;
-    }
-    
-    .forecast-section {
-        padding: 10px 0;
-    }
-    
-    .forecast-section h2 {
-        font-size: 1.1em;
-        margin-bottom: 10px;
-    }
-    
-    .forecast-day-select {
-        font-size: 0.8em;
-        padding: 6px 10px;
-    }
-    
-    .forecast-day-card {
-        padding: 10px;
-    }
-    
-    .forecast-day-header h3 {
-        font-size: 1em;
-    }
-    
-    .forecast-date {
-        font-size: 0.8em;
-    }
-    
-    .forecast-icon {
-        font-size: 1.5em;
-    }
-    
-    .forecast-temp {
-        font-size: 1.2em;
-    }
-    
-    .forecast-day-details {
-        gap: 8px;
-        margin-top: 8px;
-    }
-    
-    .forecast-detail {
-        padding: 6px;
-    }
-    
-    .forecast-detail i {
-        font-size: 0.7em;
-    }
-    
-    .forecast-hourly {
-        max-height: 150px;
-        margin-top: 8px;
-    }
-    
-    .forecast-hour {
-        padding: 6px 8px;
-        min-width: 60px;
-    }
-    
-    .hour-time {
-        font-size: 0.7em;
-    }
-    
-    .hour-icon {
-        font-size: 1em;
-    }
-    
-    .hour-temp {
-        font-size: 0.8em;
+    body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        z-index: 9998;
     }
 }
 

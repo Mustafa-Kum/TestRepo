@@ -1,13 +1,60 @@
 // main.js
 // import/export yok, global fonksiyonlar ve nesneler kullanılıyor
 
-// Orientation control - Responsive layout
+// Orientation control - Force portrait only
 function checkOrientation() {
-    // Always show app - landscape and portrait both supported
-    document.body.style.display = 'block';
-    const warning = document.getElementById('orientation-warning');
-    if (warning) {
-        warning.remove();
+    const isLandscape = window.innerWidth > window.innerHeight;
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isLandscape && isMobile) {
+        // Force portrait mode on mobile landscape
+        document.body.style.display = 'none';
+        const warning = document.getElementById('orientation-warning');
+        if (!warning) {
+            const warningDiv = document.createElement('div');
+            warningDiv.id = 'orientation-warning';
+            warningDiv.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                    color: white;
+                    font-size: 1.2em;
+                    font-weight: 600;
+                    text-align: center;
+                    padding: 20px;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                ">
+                    <div>
+                        <i class="fas fa-mobile-alt" style="font-size: 2em; margin-bottom: 15px; display: block;"></i>
+                        <p>Lütfen telefonu dikey konuma çevirin</p>
+                        <p style="font-size: 0.8em; margin-top: 10px; opacity: 0.8;">Uygulama sadece dikey modda çalışır</p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(warningDiv);
+        }
+        
+        // Prevent landscape orientation
+        if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('portrait').catch(() => {
+                console.log('Orientation lock not supported');
+            });
+        }
+    } else {
+        // Portrait mode or desktop - show app
+        document.body.style.display = 'block';
+        const warning = document.getElementById('orientation-warning');
+        if (warning) {
+            warning.remove();
+        }
     }
 }
 
