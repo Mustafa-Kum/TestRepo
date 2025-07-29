@@ -1,15 +1,20 @@
 {
-  "name": "asdd",
+  "name": "weather-app",
   "version": "1.0.0",
+  "description": "A modern weather application with Netlify functions",
   "main": "index.js",
   "scripts": {
+    "build": "echo 'Build completed successfully' && exit 0",
+    "dev": "netlify dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["weather", "netlify", "functions"],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "node-fetch": "^2.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
