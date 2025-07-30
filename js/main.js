@@ -1,59 +1,37 @@
 // main.js - Refactored for S.O.L.I.D principles
 
 // Interface for orientation management (Single Responsibility Principle)
-class IOrientationManager {
-    checkOrientation() {
-        throw new Error('checkOrientation method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IOrientationManager = {
+    checkOrientation: 'checkOrientation method must be implemented'
+};
 
 // Interface for event management (Single Responsibility Principle)
-class IEventManager {
-    addEventListeners() {
-        throw new Error('addEventListeners method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IEventManager = {
+    addEventListeners: 'addEventListeners method must be implemented'
+};
 
 // Interface for weather data management (Single Responsibility Principle)
-class IWeatherDataManager {
-    loadWeatherForCity(city) {
-        throw new Error('loadWeatherForCity method must be implemented');
-    }
-    
-    loadDefaultWeather() {
-        throw new Error('loadDefaultWeather method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IWeatherDataManager = {
+    loadWeatherForCity: 'loadWeatherForCity method must be implemented',
+    loadDefaultWeather: 'loadDefaultWeather method must be implemented'
+};
 
 // Interface for UI state management (Single Responsibility Principle)
-class IMainUIStateManager {
-    updateCurrentWeather(data) {
-        throw new Error('updateCurrentWeather method must be implemented');
-    }
-    
-    updateSelectedDayWeather(dayIndex) {
-        throw new Error('updateSelectedDayWeather method must be implemented');
-    }
-    
-    updateHourlyForecast(data) {
-        throw new Error('updateHourlyForecast method must be implemented');
-    }
-    
-    updateDailyForecast(data) {
-        throw new Error('updateDailyForecast method must be implemented');
-    }
-    
-    showError(message) {
-        throw new Error('showError method must be implemented');
-    }
-    
-    populateCitySelect(citySelect, turkishCities) {
-        throw new Error('populateCitySelect method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IMainUIStateManager = {
+    updateCurrentWeather: 'updateCurrentWeather method must be implemented',
+    updateSelectedDayWeather: 'updateSelectedDayWeather method must be implemented',
+    updateHourlyForecast: 'updateHourlyForecast method must be implemented',
+    updateDailyForecast: 'updateDailyForecast method must be implemented',
+    showError: 'showError method must be implemented',
+    populateCitySelect: 'populateCitySelect method must be implemented'
+};
 
 // Concrete orientation manager implementation
-class OrientationManager extends IOrientationManager {
+class OrientationManager {
     checkOrientation() {
         const isLandscape = window.innerWidth > window.innerHeight;
         const isMobile = window.innerWidth <= 768;
@@ -109,7 +87,7 @@ class OrientationManager extends IOrientationManager {
 }
 
 // Concrete event manager implementation
-class EventManager extends IEventManager {
+class EventManager {
     constructor(dom, weatherDataManager) {
         this.dom = dom;
         this.weatherDataManager = weatherDataManager;
@@ -135,7 +113,7 @@ class EventManager extends IEventManager {
 }
 
 // Concrete weather data manager implementation
-class WeatherDataManager extends IWeatherDataManager {
+class WeatherDataManager {
     constructor(weatherService, weatherUI) {
         this.weatherService = weatherService;
         this.weatherUI = weatherUI;
@@ -172,7 +150,7 @@ class WeatherDataManager extends IWeatherDataManager {
 }
 
 // Concrete UI state manager implementation
-class UIStateManager extends IMainUIStateManager {
+class UIStateManager {
     constructor(dom, utils) {
         this.dom = dom;
         this.utils = utils;

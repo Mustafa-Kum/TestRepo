@@ -1,46 +1,38 @@
 // WeatherUtils.js - Refactored for S.O.L.I.D principles
 
 // Interface for time formatting (Single Responsibility Principle)
-class ITimeFormatter {
-    formatTime(timestamp, timezone) {
-        throw new Error('formatTime method must be implemented');
-    }
-    
-    getCurrentTime() {
-        throw new Error('getCurrentTime method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const ITimeFormatter = {
+    formatTime: 'formatTime method must be implemented',
+    getCurrentTime: 'getCurrentTime method must be implemented'
+};
 
 // Interface for wind direction calculation (Single Responsibility Principle)
-class IWindDirectionCalculator {
-    getWindDirection(degree) {
-        throw new Error('getWindDirection method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IWindDirectionCalculator = {
+    getWindDirection: 'getWindDirection method must be implemented'
+};
 
 // Interface for weather translation (Single Responsibility Principle)
-class IWeatherTranslator {
-    translateWeatherDescription(description) {
-        throw new Error('translateWeatherDescription method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IWeatherTranslator = {
+    translateWeatherDescription: 'translateWeatherDescription method must be implemented'
+};
 
 // Interface for day name retrieval (Single Responsibility Principle)
-class IDayNameProvider {
-    getDayName(dayIndex) {
-        throw new Error('getDayName method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IDayNameProvider = {
+    getDayName: 'getDayName method must be implemented'
+};
 
 // Interface for city data management (Single Responsibility Principle)
-class ICityDataProvider {
-    getTurkishCities() {
-        throw new Error('getTurkishCities method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const ICityDataProvider = {
+    getTurkishCities: 'getTurkishCities method must be implemented'
+};
 
 // Concrete time formatter implementation
-class TimeFormatter extends ITimeFormatter {
+class TimeFormatter {
     formatTime(timestamp, timezone) {
         const date = new Date((timestamp + timezone) * 1000);
         return date.toLocaleTimeString('tr-TR', {
@@ -64,7 +56,7 @@ class TimeFormatter extends ITimeFormatter {
 }
 
 // Concrete wind direction calculator implementation
-class WindDirectionCalculator extends IWindDirectionCalculator {
+class WindDirectionCalculator {
     getWindDirection(degree) {
         const directions = ['K', 'KKD', 'KD', 'DKD', 'D', 'DGD', 'GD', 'GGD', 'G', 'GGB', 'GB', 'BGB', 'B', 'BBK', 'BK', 'KBK'];
         const index = Math.round(degree / 22.5) % 16;
@@ -73,7 +65,7 @@ class WindDirectionCalculator extends IWindDirectionCalculator {
 }
 
 // Concrete weather translator implementation
-class WeatherTranslator extends IWeatherTranslator {
+class WeatherTranslator {
     constructor() {
         this.weatherTranslations = {
             'clear sky': 'açık',
@@ -101,7 +93,7 @@ class WeatherTranslator extends IWeatherTranslator {
 }
 
 // Concrete day name provider implementation
-class DayNameProvider extends IDayNameProvider {
+class DayNameProvider {
     getDayName(dayIndex) {
         const days = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
         return days[dayIndex];
@@ -109,7 +101,7 @@ class DayNameProvider extends IDayNameProvider {
 }
 
 // Concrete city data provider implementation
-class CityDataProvider extends ICityDataProvider {
+class CityDataProvider {
     getTurkishCities() {
         return [
             "Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin",

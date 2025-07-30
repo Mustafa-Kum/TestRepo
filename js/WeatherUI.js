@@ -1,26 +1,16 @@
 // WeatherUI.js - Refactored for S.O.L.I.D principles
 
 // Interface for DOM manipulation (Dependency Inversion Principle)
-class IDomManager {
-    showElement(element) {
-        throw new Error('showElement method must be implemented');
-    }
-    
-    hideElement(element) {
-        throw new Error('hideElement method must be implemented');
-    }
-    
-    setElementText(element, text) {
-        throw new Error('setElementText method must be implemented');
-    }
-    
-    setElementAttribute(element, attribute, value) {
-        throw new Error('setElementAttribute method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IDomManager = {
+    showElement: 'showElement method must be implemented',
+    hideElement: 'hideElement method must be implemented',
+    setElementText: 'setElementText method must be implemented',
+    setElementAttribute: 'setElementAttribute method must be implemented'
+};
 
 // Concrete DOM manager implementation
-class DomManager extends IDomManager {
+class DomManager {
     showElement(element) {
         if (element) {
             element.classList.add('show');
@@ -47,48 +37,30 @@ class DomManager extends IDomManager {
 }
 
 // Interface for data display (Single Responsibility Principle)
-class IDataDisplay {
-    displayWeatherData(data) {
-        throw new Error('displayWeatherData method must be implemented');
-    }
-    
-    displayForecastData(data) {
-        throw new Error('displayForecastData method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IDataDisplay = {
+    displayWeatherData: 'displayWeatherData method must be implemented',
+    displayForecastData: 'displayForecastData method must be implemented'
+};
 
 // Interface for UI state management (Single Responsibility Principle)
-class IWeatherUIStateManager {
-    setButtonLoading(isLoading) {
-        throw new Error('setButtonLoading method must be implemented');
-    }
-    
-    showError(message) {
-        throw new Error('showError method must be implemented');
-    }
-    
-    hideAll() {
-        throw new Error('hideAll method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IWeatherUIStateManager = {
+    setButtonLoading: 'setButtonLoading method must be implemented',
+    showError: 'showError method must be implemented',
+    hideAll: 'hideAll method must be implemented'
+};
 
 // Interface for forecast data processing (Single Responsibility Principle)
-class IForecastProcessor {
-    groupForecastsByDay(forecastList) {
-        throw new Error('groupForecastsByDay method must be implemented');
-    }
-    
-    createDayForecastCard(dayForecasts) {
-        throw new Error('createDayForecastCard method must be implemented');
-    }
-    
-    createHourlyForecast(dayForecasts) {
-        throw new Error('createHourlyForecast method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IForecastProcessor = {
+    groupForecastsByDay: 'groupForecastsByDay method must be implemented',
+    createDayForecastCard: 'createDayForecastCard method must be implemented',
+    createHourlyForecast: 'createHourlyForecast method must be implemented'
+};
 
 // Concrete forecast processor implementation
-class ForecastProcessor extends IForecastProcessor {
+class ForecastProcessor {
     constructor(utils) {
         this.utils = utils;
     }
@@ -197,7 +169,7 @@ class ForecastProcessor extends IForecastProcessor {
 }
 
 // Main WeatherUI class (Open/Closed Principle)
-class WeatherUI extends IWeatherUIStateManager {
+class WeatherUI {
     constructor(dom, utils, domManager = new DomManager(), forecastProcessor = null) {
         this.dom = dom;
         this.utils = utils;

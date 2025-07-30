@@ -1,28 +1,26 @@
 // WeatherService.js - Refactored for S.O.L.I.D principles
 
 // Interface for HTTP client (Dependency Inversion Principle)
-class IHttpClient {
-    async fetch(url) {
-        throw new Error('fetch method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IHttpClient = {
+    fetch: 'fetch method must be implemented'
+};
 
 // Concrete HTTP client implementation
-class HttpClient extends IHttpClient {
+class HttpClient {
     async fetch(url) {
         return await fetch(url);
     }
 }
 
 // Interface for error handling (Single Responsibility Principle)
-class IErrorHandler {
-    handleError(response, defaultMessage) {
-        throw new Error('handleError method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IErrorHandler = {
+    handleError: 'handleError method must be implemented'
+};
 
 // Concrete error handler implementation
-class WeatherErrorHandler extends IErrorHandler {
+class WeatherErrorHandler {
     handleError(response, defaultMessage) {
         let errorMessage = defaultMessage;
         try {
@@ -51,14 +49,13 @@ class WeatherErrorHandler extends IErrorHandler {
 }
 
 // Interface for validation (Single Responsibility Principle)
-class IValidator {
-    validateCity(city) {
-        throw new Error('validateCity method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IValidator = {
+    validateCity: 'validateCity method must be implemented'
+};
 
 // Concrete validator implementation
-class CityValidator extends IValidator {
+class CityValidator {
     validateCity(city) {
         if (!city || city.trim() === '') {
             throw new Error('Lütfen bir şehir seçin.');
@@ -67,25 +64,20 @@ class CityValidator extends IValidator {
 }
 
 // Interface for weather data fetching (Interface Segregation Principle)
-class IWeatherDataFetcher {
-    async fetchCurrentWeather(city) {
-        throw new Error('fetchCurrentWeather method must be implemented');
-    }
-    
-    async fetchForecast(city) {
-        throw new Error('fetchForecast method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const IWeatherDataFetcher = {
+    fetchCurrentWeather: 'fetchCurrentWeather method must be implemented',
+    fetchForecast: 'fetchForecast method must be implemented'
+};
 
 // Interface for location services (Interface Segregation Principle)
-class ILocationService {
-    async getCurrentLocation() {
-        throw new Error('getCurrentLocation method must be implemented');
-    }
-}
+// Note: Using interface as contract rather than inheritance for better flexibility
+const ILocationService = {
+    getCurrentLocation: 'getCurrentLocation method must be implemented'
+};
 
 // Concrete location service implementation
-class GeolocationService extends ILocationService {
+class GeolocationService {
     async getCurrentLocation() {
         return new Promise((resolve, reject) => {
             if (!navigator.geolocation) {
