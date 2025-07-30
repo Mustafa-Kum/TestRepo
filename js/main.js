@@ -1,138 +1,213 @@
-// main.js - Dark Theme Weather App
+// main.js - Refactored for S.O.L.I.D principles
 
-// Orientation control - Force portrait only
-function checkOrientation() {
-    const isLandscape = window.innerWidth > window.innerHeight;
-    const isMobile = window.innerWidth <= 768;
+// Interface for orientation management (Single Responsibility Principle)
+class IOrientationManager {
+    checkOrientation() {
+        throw new Error('checkOrientation method must be implemented');
+    }
+}
+
+// Interface for event management (Single Responsibility Principle)
+class IEventManager {
+    addEventListeners() {
+        throw new Error('addEventListeners method must be implemented');
+    }
+}
+
+// Interface for weather data management (Single Responsibility Principle)
+class IWeatherDataManager {
+    loadWeatherForCity(city) {
+        throw new Error('loadWeatherForCity method must be implemented');
+    }
     
-    if (isLandscape && isMobile) {
-        // Force portrait mode on mobile landscape
-        document.body.style.display = 'none';
-        const warning = document.getElementById('orientation-warning');
-        if (!warning) {
-            const warningDiv = document.createElement('div');
-            warningDiv.id = 'orientation-warning';
-            warningDiv.innerHTML = `
-                <div style="
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 9999;
-                    color: white;
-                    font-size: 1.2em;
-                    font-weight: 600;
-                    text-align: center;
-                    padding: 20px;
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                ">
-                    <div>
-                        <i class="fas fa-mobile-alt" style="font-size: 2em; margin-bottom: 15px; display: block;"></i>
-                        <p>Lütfen telefonu dikey konuma çevirin</p>
-                        <p style="font-size: 0.8em; margin-top: 10px; opacity: 0.8;">Uygulama sadece dikey modda çalışır</p>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(warningDiv);
-        }
+    loadDefaultWeather() {
+        throw new Error('loadDefaultWeather method must be implemented');
+    }
+}
+
+// Interface for UI state management (Single Responsibility Principle)
+class IUIStateManager {
+    updateCurrentWeather(data) {
+        throw new Error('updateCurrentWeather method must be implemented');
+    }
+    
+    updateSelectedDayWeather(dayIndex) {
+        throw new Error('updateSelectedDayWeather method must be implemented');
+    }
+    
+    updateHourlyForecast(data) {
+        throw new Error('updateHourlyForecast method must be implemented');
+    }
+    
+    updateDailyForecast(data) {
+        throw new Error('updateDailyForecast method must be implemented');
+    }
+    
+    showError(message) {
+        throw new Error('showError method must be implemented');
+    }
+    
+    populateCitySelect(citySelect, turkishCities) {
+        throw new Error('populateCitySelect method must be implemented');
+    }
+}
+
+// Concrete orientation manager implementation
+class OrientationManager extends IOrientationManager {
+    checkOrientation() {
+        const isLandscape = window.innerWidth > window.innerHeight;
+        const isMobile = window.innerWidth <= 768;
         
-        // Prevent landscape orientation
-        if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('portrait').catch(() => {
-                console.log('Orientation lock not supported');
-            });
-        }
-    } else {
-        // Portrait mode or desktop - show app
-        document.body.style.display = 'block';
-        const warning = document.getElementById('orientation-warning');
-        if (warning) {
-            warning.remove();
+        if (isLandscape && isMobile) {
+            document.body.style.display = 'none';
+            const warning = document.getElementById('orientation-warning');
+            if (!warning) {
+                const warningDiv = document.createElement('div');
+                warningDiv.id = 'orientation-warning';
+                warningDiv.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 9999;
+                        color: white;
+                        font-size: 1.2em;
+                        font-weight: 600;
+                        text-align: center;
+                        padding: 20px;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    ">
+                        <div>
+                            <i class="fas fa-mobile-alt" style="font-size: 2em; margin-bottom: 15px; display: block;"></i>
+                            <p>Lütfen telefonu dikey konuma çevirin</p>
+                            <p style="font-size: 0.8em; margin-top: 10px; opacity: 0.8;">Uygulama sadece dikey modda çalışır</p>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(warningDiv);
+            }
+            
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('portrait').catch(() => {
+                    console.log('Orientation lock not supported');
+                });
+            }
+        } else {
+            document.body.style.display = 'block';
+            const warning = document.getElementById('orientation-warning');
+            if (warning) {
+                warning.remove();
+            }
         }
     }
 }
 
-// API Config - Netlify function kullan
-const BASE_URL = '/.netlify/functions/weather';
-const ICON_BASE_URL = 'https://openweathermap.org/img/wn/';
-
-// Debug: BASE_URL kontrolü
-console.log('[DEBUG] BASE_URL:', BASE_URL);
-
-// WeatherUtils saf modül olarak kullanılıyor
-const utils = typeof WeatherUtils !== 'undefined' ? WeatherUtils : window.WeatherUtils;
-
-// Global variables to store forecast data
-let currentForecastData = null;
-let selectedDayIndex = 0; // 0 = today, 1 = tomorrow, etc.
-
-// DOM Elements for new layout
-const dom = {
-    // City selector
-    citySelect: document.getElementById('city-select'),
+// Concrete event manager implementation
+class EventManager extends IEventManager {
+    constructor(dom, weatherDataManager) {
+        this.dom = dom;
+        this.weatherDataManager = weatherDataManager;
+    }
     
-    // Weather data elements
-    locationText: document.getElementById('location-text'),
-    currentTemp: document.getElementById('current-temp'),
-    currentCondition: document.getElementById('current-condition'),
-    feelsLikeTemp: document.getElementById('feels-like-temp'),
-    hourlyData: document.getElementById('hourly-data'),
-    dailyData: document.getElementById('daily-data'),
-    
-    // UI elements
-    currentTemperature: document.querySelector('.current-temperature'),
-    weatherCondition: document.querySelector('.weather-condition'),
-    feelsLike: document.querySelector('.feels-like'),
-    currentLabel: document.querySelector('.current-label'),
-    hourlyForecast: document.querySelector('.hourly-forecast'),
-    dailyForecastContainer: document.querySelector('.daily-forecast-container'),
-    
-    // Menu button
-    menuButton: document.querySelector('.menu-button')
-};
+    addEventListeners() {
+        if (this.dom.menuButton) {
+            this.dom.menuButton.addEventListener('click', () => {
+                console.log('Menu button clicked');
+            });
+        }
+        
+        if (this.dom.citySelect) {
+            this.dom.citySelect.addEventListener('change', () => {
+                const selectedCity = this.dom.citySelect.value;
+                console.log('[DEBUG] City changed to:', selectedCity);
+                if (selectedCity) {
+                    this.weatherDataManager.loadWeatherForCity(selectedCity);
+                }
+            });
+        }
+    }
+}
 
-const weatherService = new window.WeatherService(null, BASE_URL, ICON_BASE_URL);
+// Concrete weather data manager implementation
+class WeatherDataManager extends IWeatherDataManager {
+    constructor(weatherService, weatherUI) {
+        this.weatherService = weatherService;
+        this.weatherUI = weatherUI;
+    }
+    
+    loadWeatherForCity(city) {
+        this.weatherService.fetchWeatherAndForecastWithLoading(
+            city,
+            (isLoading) => {
+                console.log('[DEBUG] Loading weather data for', city, ':', isLoading);
+            },
+            (data) => {
+                console.log('[DEBUG] Current weather data received for', city, ':', data);
+                this.weatherUI.updateCurrentWeather(data);
+            },
+            (forecastData) => {
+                console.log('[DEBUG] Forecast data received for', city, ':', forecastData);
+                this.weatherUI.updateHourlyForecast(forecastData);
+                this.weatherUI.updateDailyForecast(forecastData);
+            },
+            (msg) => {
+                console.log('[DEBUG] Error occurred for', city, ':', msg);
+                this.weatherUI.showError(msg);
+            },
+            () => {
+                console.log('[DEBUG] hideAll called');
+            }
+        );
+    }
+    
+    loadDefaultWeather() {
+        this.loadWeatherForCity('Ankara');
+    }
+}
 
-// Weather UI for new layout
-const weatherUI = {
-    updateCurrentWeather: function(data) {
+// Concrete UI state manager implementation
+class UIStateManager extends IUIStateManager {
+    constructor(dom, utils) {
+        this.dom = dom;
+        this.utils = utils;
+        this.currentForecastData = null;
+        this.selectedDayIndex = 0;
+    }
+    
+    updateCurrentWeather(data) {
         if (!data) return;
         
         const { main, weather } = data;
         
-        // Update current temperature
-        if (dom.currentTemperature) {
-            dom.currentTemperature.textContent = `${Math.round(main.temp)}°C`;
+        if (this.dom.currentTemperature) {
+            this.dom.currentTemperature.textContent = `${Math.round(main.temp)}°C`;
         }
         
-        // Update weather condition
-        if (dom.weatherCondition) {
-            const translatedDescription = utils.translateWeatherDescription(weather[0]?.description || '');
-            dom.weatherCondition.textContent = translatedDescription;
+        if (this.dom.weatherCondition) {
+            const translatedDescription = this.utils.translateWeatherDescription(weather[0]?.description || '');
+            this.dom.weatherCondition.textContent = translatedDescription;
         }
         
-        // Update feels like
-        if (dom.feelsLike) {
-            dom.feelsLike.textContent = `Hissedilen ${Math.round(main.feels_like)}°`;
+        if (this.dom.feelsLike) {
+            this.dom.feelsLike.textContent = `Hissedilen ${Math.round(main.feels_like)}°`;
         }
         
-        // Update current label
-        if (dom.currentLabel) {
-            dom.currentLabel.textContent = 'Şimdi';
+        if (this.dom.currentLabel) {
+            this.dom.currentLabel.textContent = 'Şimdi';
         }
-    },
+    }
     
-    updateSelectedDayWeather: function(dayIndex) {
-        if (!currentForecastData || !currentForecastData.list) return;
+    updateSelectedDayWeather(dayIndex) {
+        if (!this.currentForecastData || !this.currentForecastData.list) return;
         
-        // Group forecasts by day
         const dailyGroups = {};
-        currentForecastData.list.forEach(forecast => {
+        this.currentForecastData.list.forEach(forecast => {
             const date = new Date(forecast.dt * 1000);
             const dayKey = date.toISOString().split('T')[0];
             
@@ -142,9 +217,7 @@ const weatherUI = {
             dailyGroups[dayKey].push(forecast);
         });
         
-        // Get all days (including today)
-        const allDays = Object.entries(dailyGroups)
-            .slice(0, 5); // Include today and next 4 days
+        const allDays = Object.entries(dailyGroups).slice(0, 5);
         
         if (dayIndex >= 0 && dayIndex < allDays.length) {
             const [dayKey, forecasts] = allDays[dayIndex];
@@ -152,49 +225,42 @@ const weatherUI = {
             const today = new Date();
             const todayKey = today.toISOString().split('T')[0];
             
-            // Check if this is today
             const isToday = dayKey === todayKey;
-            const dayName = isToday ? 'Bugün' : utils.getDayName(date.getDay());
+            const dayName = isToday ? 'Bugün' : this.utils.getDayName(date.getDay());
             
-            // Calculate average values for the selected day
             const avgTemp = Math.round(forecasts.reduce((sum, f) => sum + f.main.temp, 0) / forecasts.length);
             const avgFeelsLike = Math.round(forecasts.reduce((sum, f) => sum + f.main.feels_like, 0) / forecasts.length);
             
-            // Get most common weather icon
             const weatherIcons = forecasts.map(f => f.weather[0]?.icon).filter(Boolean);
             const mostCommonIcon = this.getMostCommonIcon(weatherIcons);
             const weatherDescription = forecasts[0]?.weather[0]?.description || '';
             
-            // Update current weather card
-            if (dom.currentTemperature) {
-                dom.currentTemperature.textContent = `${avgTemp}°C`;
+            if (this.dom.currentTemperature) {
+                this.dom.currentTemperature.textContent = `${avgTemp}°C`;
             }
             
-            if (dom.weatherCondition) {
-                const translatedDescription = utils.translateWeatherDescription(weatherDescription);
-                dom.weatherCondition.textContent = translatedDescription;
+            if (this.dom.weatherCondition) {
+                const translatedDescription = this.utils.translateWeatherDescription(weatherDescription);
+                this.dom.weatherCondition.textContent = translatedDescription;
             }
             
-            if (dom.feelsLike) {
-                dom.feelsLike.textContent = `Hissedilen ${avgFeelsLike}°`;
+            if (this.dom.feelsLike) {
+                this.dom.feelsLike.textContent = `Hissedilen ${avgFeelsLike}°`;
             }
             
-            if (dom.currentLabel) {
-                dom.currentLabel.textContent = dayName;
+            if (this.dom.currentLabel) {
+                this.dom.currentLabel.textContent = dayName;
             }
             
-            // Update hourly forecast for the selected day
             this.updateHourlyForecastForDay(forecasts);
         }
-    },
+    }
     
-    updateHourlyForecastForDay: function(dayForecasts) {
-        if (!dom.hourlyForecast) return;
+    updateHourlyForecastForDay(dayForecasts) {
+        if (!this.dom.hourlyForecast) return;
         
-        // Clear existing hourly items
-        dom.hourlyForecast.innerHTML = '';
+        this.dom.hourlyForecast.innerHTML = '';
         
-        // Show hourly data for the selected day
         dayForecasts.forEach((hour, index) => {
             const time = new Date(hour.dt * 1000);
             const hourStr = `${time.getHours()}:00`;
@@ -204,8 +270,7 @@ const weatherUI = {
             const hourlyItem = document.createElement('div');
             hourlyItem.className = 'hourly-item';
             
-            // Determine icon based on weather condition
-            let iconClass = 'fas fa-moon'; // Default night icon
+            let iconClass = 'fas fa-moon';
             if (icon.includes('d')) {
                 if (icon.includes('01')) iconClass = 'fas fa-sun';
                 else if (icon.includes('02')) iconClass = 'fas fa-cloud-sun';
@@ -232,19 +297,17 @@ const weatherUI = {
                 <div class="hourly-time">${hourStr}</div>
             `;
             
-            dom.hourlyForecast.appendChild(hourlyItem);
+            this.dom.hourlyForecast.appendChild(hourlyItem);
         });
-    },
+    }
     
-    updateHourlyForecast: function(data) {
+    updateHourlyForecast(data) {
         if (!data || !data.list) return;
         
-        // Clear existing hourly items
-        if (dom.hourlyForecast) {
-            dom.hourlyForecast.innerHTML = '';
+        if (this.dom.hourlyForecast) {
+            this.dom.hourlyForecast.innerHTML = '';
         }
         
-        // Get next 6 hours
         const hourlyData = data.list.slice(0, 6);
         
         hourlyData.forEach((hour, index) => {
@@ -256,8 +319,7 @@ const weatherUI = {
             const hourlyItem = document.createElement('div');
             hourlyItem.className = `hourly-item ${index === 0 ? 'current' : ''}`;
             
-            // Determine icon based on weather condition
-            let iconClass = 'fas fa-moon'; // Default night icon
+            let iconClass = 'fas fa-moon';
             if (icon.includes('d')) {
                 if (icon.includes('01')) iconClass = 'fas fa-sun';
                 else if (icon.includes('02')) iconClass = 'fas fa-cloud-sun';
@@ -284,24 +346,21 @@ const weatherUI = {
                 <div class="hourly-time">${hourStr}</div>
             `;
             
-            if (dom.hourlyForecast) {
-                dom.hourlyForecast.appendChild(hourlyItem);
+            if (this.dom.hourlyForecast) {
+                this.dom.hourlyForecast.appendChild(hourlyItem);
             }
         });
-    },
+    }
     
-    updateDailyForecast: function(data) {
+    updateDailyForecast(data) {
         if (!data || !data.list) return;
         
-        // Store forecast data globally
-        currentForecastData = data;
+        this.currentForecastData = data;
         
-        // Clear existing daily items
-        if (dom.dailyForecastContainer) {
-            dom.dailyForecastContainer.innerHTML = '';
+        if (this.dom.dailyForecastContainer) {
+            this.dom.dailyForecastContainer.innerHTML = '';
         }
         
-        // Group forecasts by day
         const dailyGroups = {};
         data.list.forEach(forecast => {
             const date = new Date(forecast.dt * 1000);
@@ -313,31 +372,25 @@ const weatherUI = {
             dailyGroups[dayKey].push(forecast);
         });
         
-        // Get next 5 days (including today)
         const today = new Date();
         const todayKey = today.toISOString().split('T')[0];
-        const allDays = Object.entries(dailyGroups)
-            .slice(0, 5); // Include today and next 4 days
+        const allDays = Object.entries(dailyGroups).slice(0, 5);
         
         allDays.forEach(([dayKey, forecasts], index) => {
             const date = new Date(dayKey);
             const today = new Date();
             const todayKey = today.toISOString().split('T')[0];
             
-            // Check if this is today
             const isToday = dayKey === todayKey;
-            const dayName = isToday ? 'Bugün' : utils.getDayName(date.getDay());
+            const dayName = isToday ? 'Bugün' : this.utils.getDayName(date.getDay());
             
-            // Calculate average temperature
             const avgTemp = Math.round(forecasts.reduce((sum, f) => sum + f.main.temp, 0) / forecasts.length);
             const minTemp = Math.round(Math.min(...forecasts.map(f => f.main.temp)));
             const maxTemp = Math.round(Math.max(...forecasts.map(f => f.main.temp)));
             
-            // Get most common weather icon
             const weatherIcons = forecasts.map(f => f.weather[0]?.icon).filter(Boolean);
             const mostCommonIcon = this.getMostCommonIcon(weatherIcons);
             
-            // Determine icon class
             let iconClass = 'fas fa-cloud';
             if (mostCommonIcon.includes('01')) iconClass = 'fas fa-sun';
             else if (mostCommonIcon.includes('02')) iconClass = 'fas fa-cloud-sun';
@@ -359,27 +412,20 @@ const weatherUI = {
                 <div class="daily-temp">${maxTemp}°/${minTemp}°</div>
             `;
             
-            // Add click event listener
             dailyItem.addEventListener('click', () => {
-                // Remove selected class from all items
                 document.querySelectorAll('.daily-item').forEach(d => d.classList.remove('selected'));
-                // Add selected class to clicked item
                 dailyItem.classList.add('selected');
-                
-                // Update selected day index
-                selectedDayIndex = index;
-                
-                // Update current weather card for selected day
+                this.selectedDayIndex = index;
                 this.updateSelectedDayWeather(index);
             });
             
-            if (dom.dailyForecastContainer) {
-                dom.dailyForecastContainer.appendChild(dailyItem);
+            if (this.dom.dailyForecastContainer) {
+                this.dom.dailyForecastContainer.appendChild(dailyItem);
             }
         });
-    },
+    }
     
-    getMostCommonIcon: function(icons) {
+    getMostCommonIcon(icons) {
         const iconCount = {};
         icons.forEach(icon => {
             iconCount[icon] = (iconCount[icon] || 0) + 1;
@@ -396,14 +442,13 @@ const weatherUI = {
         });
         
         return mostCommon;
-    },
+    }
     
-    showError: function(message) {
+    showError(message) {
         console.error('Weather error:', message);
-        // For now, just log the error. You can add a toast notification later
-    },
+    }
     
-    populateCitySelect: function(citySelect, turkishCities) {
+    populateCitySelect(citySelect, turkishCities) {
         citySelect.innerHTML = '';
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
@@ -418,85 +463,65 @@ const weatherUI = {
             citySelect.appendChild(option);
         });
         
-        // Set Ankara as default selected city
         citySelect.value = 'Ankara';
     }
-};
-
-// Event listeners
-function addEventListeners() {
-    // Menu button functionality
-    if (dom.menuButton) {
-        dom.menuButton.addEventListener('click', () => {
-            console.log('Menu button clicked');
-            // Add menu functionality here
-        });
-    }
-    
-    // City select functionality
-    if (dom.citySelect) {
-        dom.citySelect.addEventListener('change', () => {
-            const selectedCity = dom.citySelect.value;
-            console.log('[DEBUG] City changed to:', selectedCity);
-            if (selectedCity) {
-                loadWeatherForCity(selectedCity);
-            }
-        });
-    }
-    
-    // Initialize city select
-    initCitySelect();
-    
-    // Auto-load weather for a default city
-    loadDefaultWeather();
 }
 
-// Initialize city select dropdown
-function initCitySelect() {
-    if (dom.citySelect && utils.turkishCities) {
-        weatherUI.populateCitySelect(dom.citySelect, utils.turkishCities);
+// Main application class (Open/Closed Principle)
+class WeatherApp {
+    constructor() {
+        this.BASE_URL = '/.netlify/functions/weather';
+        this.ICON_BASE_URL = 'https://openweathermap.org/img/wn/';
+        
+        console.log('[DEBUG] BASE_URL:', this.BASE_URL);
+        
+        this.utils = typeof WeatherUtils !== 'undefined' ? WeatherUtils : window.WeatherUtils;
+        
+        this.dom = {
+            citySelect: document.getElementById('city-select'),
+            locationText: document.getElementById('location-text'),
+            currentTemp: document.getElementById('current-temp'),
+            currentCondition: document.getElementById('current-condition'),
+            feelsLikeTemp: document.getElementById('feels-like-temp'),
+            hourlyData: document.getElementById('hourly-data'),
+            dailyData: document.getElementById('daily-data'),
+            currentTemperature: document.querySelector('.current-temperature'),
+            weatherCondition: document.querySelector('.weather-condition'),
+            feelsLike: document.querySelector('.feels-like'),
+            currentLabel: document.querySelector('.current-label'),
+            hourlyForecast: document.querySelector('.hourly-forecast'),
+            dailyForecastContainer: document.querySelector('.daily-forecast-container'),
+            menuButton: document.querySelector('.menu-button')
+        };
+        
+        this.weatherService = new window.WeatherService(null, this.BASE_URL, this.ICON_BASE_URL);
+        this.weatherUI = new window.WeatherUI(this.dom, this.utils);
+        this.uiStateManager = new UIStateManager(this.dom, this.utils);
+        this.weatherDataManager = new WeatherDataManager(this.weatherService, this.uiStateManager);
+        this.eventManager = new EventManager(this.dom, this.weatherDataManager);
+        this.orientationManager = new OrientationManager();
     }
-}
-
-// Load weather for specific city
-function loadWeatherForCity(city) {
-                weatherService.fetchWeatherAndForecastWithLoading(
-        city,
-                    (isLoading) => {
-            console.log('[DEBUG] Loading weather data for', city, ':', isLoading);
-                    },
-                    (data) => {
-            console.log('[DEBUG] Current weather data received for', city, ':', data);
-            weatherUI.updateCurrentWeather(data);
-                    },
-                    (forecastData) => {
-            console.log('[DEBUG] Forecast data received for', city, ':', forecastData);
-            weatherUI.updateHourlyForecast(forecastData);
-            weatherUI.updateDailyForecast(forecastData);
-                    },
-                    (msg) => {
-            console.log('[DEBUG] Error occurred for', city, ':', msg);
-                        weatherUI.showError(msg);
-                    },
-                    () => {
-            console.log('[DEBUG] hideAll called');
+    
+    init() {
+        this.orientationManager.checkOrientation();
+        
+        window.addEventListener('orientationchange', () => this.orientationManager.checkOrientation());
+        window.addEventListener('resize', () => this.orientationManager.checkOrientation());
+        
+        this.eventManager.addEventListeners();
+        this.initCitySelect();
+        this.weatherDataManager.loadDefaultWeather();
+    }
+    
+    initCitySelect() {
+        if (this.dom.citySelect && this.utils.turkishCities) {
+            this.uiStateManager.populateCitySelect(this.dom.citySelect, this.utils.turkishCities);
         }
-    );
+    }
 }
 
-// Load default weather (Ankara)
-function loadDefaultWeather() {
-    loadWeatherForCity('Ankara');
-}
-
-// Initialize app
+// Initialize app when DOM is loaded
 window.addEventListener('DOMContentLoaded', () => {
-    // Check orientation on load
-    checkOrientation();
-    
-    // Listen for orientation changes
-    window.addEventListener('orientationchange', checkOrientation);
-    window.addEventListener('resize', checkOrientation);
-    
-    addEventListeners();
+    const app = new WeatherApp();
+    app.init();
 });
