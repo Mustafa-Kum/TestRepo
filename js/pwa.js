@@ -4,7 +4,7 @@ class PWA {
     this.isOnline = navigator.onLine;
     this.init();
   }
-
+//
   async init() {
     this.setupOnlineOfflineListeners();
     await this.registerServiceWorker();
