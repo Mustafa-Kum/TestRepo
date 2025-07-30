@@ -208,14 +208,16 @@ const weatherUI = {
             let iconClass = 'fas fa-moon'; // Default night icon
             if (icon.includes('d')) {
                 if (icon.includes('01')) iconClass = 'fas fa-sun';
-                else if (icon.includes('02') || icon.includes('03') || icon.includes('04')) iconClass = 'fas fa-cloud';
+                else if (icon.includes('02')) iconClass = 'fas fa-cloud-sun';
+                else if (icon.includes('03') || icon.includes('04')) iconClass = 'fas fa-cloud';
                 else if (icon.includes('09') || icon.includes('10')) iconClass = 'fas fa-cloud-rain';
                 else if (icon.includes('11')) iconClass = 'fas fa-bolt';
                 else if (icon.includes('13')) iconClass = 'fas fa-snowflake';
                 else if (icon.includes('50')) iconClass = 'fas fa-smog';
             } else {
                 if (icon.includes('01')) iconClass = 'fas fa-moon';
-                else if (icon.includes('02') || icon.includes('03') || icon.includes('04')) iconClass = 'fas fa-cloud';
+                else if (icon.includes('02')) iconClass = 'fas fa-cloud-moon';
+                else if (icon.includes('03') || icon.includes('04')) iconClass = 'fas fa-cloud';
                 else if (icon.includes('09') || icon.includes('10')) iconClass = 'fas fa-cloud-rain';
                 else if (icon.includes('11')) iconClass = 'fas fa-bolt';
                 else if (icon.includes('13')) iconClass = 'fas fa-snowflake';
@@ -258,14 +260,16 @@ const weatherUI = {
             let iconClass = 'fas fa-moon'; // Default night icon
             if (icon.includes('d')) {
                 if (icon.includes('01')) iconClass = 'fas fa-sun';
-                else if (icon.includes('02') || icon.includes('03') || icon.includes('04')) iconClass = 'fas fa-cloud';
+                else if (icon.includes('02')) iconClass = 'fas fa-cloud-sun';
+                else if (icon.includes('03') || icon.includes('04')) iconClass = 'fas fa-cloud';
                 else if (icon.includes('09') || icon.includes('10')) iconClass = 'fas fa-cloud-rain';
                 else if (icon.includes('11')) iconClass = 'fas fa-bolt';
                 else if (icon.includes('13')) iconClass = 'fas fa-snowflake';
                 else if (icon.includes('50')) iconClass = 'fas fa-smog';
             } else {
                 if (icon.includes('01')) iconClass = 'fas fa-moon';
-                else if (icon.includes('02') || icon.includes('03') || icon.includes('04')) iconClass = 'fas fa-cloud';
+                else if (icon.includes('02')) iconClass = 'fas fa-cloud-moon';
+                else if (icon.includes('03') || icon.includes('04')) iconClass = 'fas fa-cloud';
                 else if (icon.includes('09') || icon.includes('10')) iconClass = 'fas fa-cloud-rain';
                 else if (icon.includes('11')) iconClass = 'fas fa-bolt';
                 else if (icon.includes('13')) iconClass = 'fas fa-snowflake';
@@ -336,7 +340,8 @@ const weatherUI = {
             // Determine icon class
             let iconClass = 'fas fa-cloud';
             if (mostCommonIcon.includes('01')) iconClass = 'fas fa-sun';
-            else if (mostCommonIcon.includes('02') || mostCommonIcon.includes('03') || mostCommonIcon.includes('04')) iconClass = 'fas fa-cloud';
+            else if (mostCommonIcon.includes('02')) iconClass = 'fas fa-cloud-sun';
+            else if (mostCommonIcon.includes('03') || mostCommonIcon.includes('04')) iconClass = 'fas fa-cloud';
             else if (mostCommonIcon.includes('09') || mostCommonIcon.includes('10')) iconClass = 'fas fa-cloud-rain';
             else if (mostCommonIcon.includes('11')) iconClass = 'fas fa-bolt';
             else if (mostCommonIcon.includes('13')) iconClass = 'fas fa-snowflake';
