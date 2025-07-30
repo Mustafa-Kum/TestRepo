@@ -142,17 +142,19 @@ const weatherUI = {
             dailyGroups[dayKey].push(forecast);
         });
         
-        // Get future days (excluding today)
-        const today = new Date();
-        const todayKey = today.toISOString().split('T')[0];
-        const futureDays = Object.entries(dailyGroups)
-            .filter(([dayKey]) => dayKey !== todayKey)
-            .slice(0, 5);
+        // Get all days (including today)
+        const allDays = Object.entries(dailyGroups)
+            .slice(0, 5); // Include today and next 4 days
         
-        if (dayIndex >= 0 && dayIndex < futureDays.length) {
-            const [dayKey, forecasts] = futureDays[dayIndex];
+        if (dayIndex >= 0 && dayIndex < allDays.length) {
+            const [dayKey, forecasts] = allDays[dayIndex];
             const date = new Date(dayKey);
-            const dayName = utils.getDayName(date.getDay());
+            const today = new Date();
+            const todayKey = today.toISOString().split('T')[0];
+            
+            // Check if this is today
+            const isToday = dayKey === todayKey;
+            const dayName = isToday ? 'Bugün' : utils.getDayName(date.getDay());
             
             // Calculate average values for the selected day
             const avgTemp = Math.round(forecasts.reduce((sum, f) => sum + f.main.temp, 0) / forecasts.length);
@@ -307,16 +309,20 @@ const weatherUI = {
             dailyGroups[dayKey].push(forecast);
         });
         
-        // Get next 5 days (excluding today)
+        // Get next 5 days (including today)
         const today = new Date();
         const todayKey = today.toISOString().split('T')[0];
-        const futureDays = Object.entries(dailyGroups)
-            .filter(([dayKey]) => dayKey !== todayKey)
-            .slice(0, 5);
+        const allDays = Object.entries(dailyGroups)
+            .slice(0, 5); // Include today and next 4 days
         
-        futureDays.forEach(([dayKey, forecasts], index) => {
+        allDays.forEach(([dayKey, forecasts], index) => {
             const date = new Date(dayKey);
-            const dayName = utils.getDayName(date.getDay());
+            const today = new Date();
+            const todayKey = today.toISOString().split('T')[0];
+            
+            // Check if this is today
+            const isToday = dayKey === todayKey;
+            const dayName = isToday ? 'Bugün' : utils.getDayName(date.getDay());
             
             // Calculate average temperature
             const avgTemp = Math.round(forecasts.reduce((sum, f) => sum + f.main.temp, 0) / forecasts.length);

@@ -97,24 +97,16 @@ WeatherUI.prototype.displayForecastData = function(data) {
         const today = new Date();
         const todayKey = today.toISOString().split('T')[0];
         
-        // Gelecek günleri filtrele
-        const futureForecasts = dailyForecasts.filter((dayForecast, index) => {
-            if (index >= 5) return false; // Sadece 5 gün göster
-            
-            const firstForecast = dayForecast[0];
-            const forecastDate = new Date(firstForecast.dt * 1000);
-            const forecastKey = forecastDate.toISOString().split('T')[0];
-            
-            return forecastKey !== todayKey; // Bugünün forecast'unu atla
-        });
+        // İlk 5 günü al (bugün dahil)
+        const allForecasts = dailyForecasts.slice(0, 5);
         
         // Dropdown menü oluştur
-        const dropdownContainer = this.createForecastDropdown(futureForecasts);
+        const dropdownContainer = this.createForecastDropdown(allForecasts);
         forecastContainer.appendChild(dropdownContainer);
         
         // İlk günü varsayılan olarak göster
-        if (futureForecasts.length > 0) {
-            this.showSelectedDayForecast(futureForecasts[0]);
+        if (allForecasts.length > 0) {
+            this.showSelectedDayForecast(allForecasts[0]);
         }
         
         // Forecast section zaten weather container içinde olduğu için ayrıca göstermeye gerek yok
@@ -148,7 +140,13 @@ WeatherUI.prototype.createDayForecastCard = function(dayForecasts) {
     
     const firstForecast = dayForecasts[0];
     const date = new Date(firstForecast.dt * 1000);
-    const dayName = this.utils.getDayName(date.getDay());
+    const today = new Date();
+    const todayKey = today.toISOString().split('T')[0];
+    const forecastKey = date.toISOString().split('T')[0];
+    
+    // Check if this is today
+    const isToday = forecastKey === todayKey;
+    const dayName = isToday ? 'Bugün' : this.utils.getDayName(date.getDay());
     const dateStr = date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
     
     // Günlük ortalama değerler hesapla
@@ -243,12 +241,18 @@ WeatherUI.prototype.createForecastDropdown = function(futureForecasts) {
     futureForecasts.forEach((dayForecast, index) => {
         const firstForecast = dayForecast[0];
         const date = new Date(firstForecast.dt * 1000);
-        const dayName = this.utils.getDayName(date.getDay());
+        const today = new Date();
+        const todayKey = today.toISOString().split('T')[0];
+        const forecastKey = date.toISOString().split('T')[0];
+        
+        // Check if this is today
+        const isToday = forecastKey === todayKey;
+        const dayName = isToday ? 'Bugün' : this.utils.getDayName(date.getDay());
         const dateStr = date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
         
         const option = document.createElement('option');
         option.value = index;
-        option.textContent = `${dayName} ${dateStr}`;
+        option.textContent = isToday ? 'Bugün' : `${dayName} ${dateStr}`;
         select.appendChild(option);
     });
     
