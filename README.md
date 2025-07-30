@@ -1,5 +1,7 @@
 # Hava Durumu Uygulaması
 
+Link: https://statuesque-biscotti-6b9cea.netlify.app/
+
 ## Kullanılan AI
 - Cursor (Auto)
 
