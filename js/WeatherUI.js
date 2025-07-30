@@ -58,7 +58,7 @@ class IDataDisplay {
 }
 
 // Interface for UI state management (Single Responsibility Principle)
-class IUIStateManager {
+class IWeatherUIStateManager {
     setButtonLoading(isLoading) {
         throw new Error('setButtonLoading method must be implemented');
     }
@@ -197,7 +197,7 @@ class ForecastProcessor extends IForecastProcessor {
 }
 
 // Main WeatherUI class (Open/Closed Principle)
-class WeatherUI {
+class WeatherUI extends IWeatherUIStateManager {
     constructor(dom, utils, domManager = new DomManager(), forecastProcessor = null) {
         this.dom = dom;
         this.utils = utils;

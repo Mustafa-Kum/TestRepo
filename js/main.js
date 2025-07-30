@@ -26,7 +26,7 @@ class IWeatherDataManager {
 }
 
 // Interface for UI state management (Single Responsibility Principle)
-class IUIStateManager {
+class IMainUIStateManager {
     updateCurrentWeather(data) {
         throw new Error('updateCurrentWeather method must be implemented');
     }
@@ -172,7 +172,7 @@ class WeatherDataManager extends IWeatherDataManager {
 }
 
 // Concrete UI state manager implementation
-class UIStateManager extends IUIStateManager {
+class UIStateManager extends IMainUIStateManager {
     constructor(dom, utils) {
         this.dom = dom;
         this.utils = utils;
