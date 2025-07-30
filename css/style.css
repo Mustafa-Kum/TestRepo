@@ -230,9 +230,29 @@ body {
     font-size: 1.2em;
 }
 
-/* Sun icon specific styling */
+/* Weather icon specific styling */
 .hourly-icon .fa-sun {
     color: #fbbf24;
+}
+
+.hourly-icon .fa-cloud {
+    color: #94a3b8;
+}
+
+.hourly-icon .fa-cloud-rain {
+    color: #60a5fa;
+}
+
+.hourly-icon .fa-bolt {
+    color: #f59e0b;
+}
+
+.hourly-icon .fa-snowflake {
+    color: #e0e7ff;
+}
+
+.hourly-icon .fa-smog {
+    color: #9ca3af;
 }
 
 .hourly-time {
@@ -291,9 +311,29 @@ body {
     font-size: 1.3em;
 }
 
-/* Sun icon specific styling for daily forecast */
+/* Weather icon specific styling for daily forecast */
 .daily-icon .fa-sun {
     color: #fbbf24;
+}
+
+.daily-icon .fa-cloud {
+    color: #94a3b8;
+}
+
+.daily-icon .fa-cloud-rain {
+    color: #60a5fa;
+}
+
+.daily-icon .fa-bolt {
+    color: #f59e0b;
+}
+
+.daily-icon .fa-snowflake {
+    color: #e0e7ff;
+}
+
+.daily-icon .fa-smog {
+    color: #9ca3af;
 }
 
 .daily-temp {
