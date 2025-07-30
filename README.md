@@ -40,7 +40,6 @@ Link: https://statuesque-biscotti-6b9cea.netlify.app/
    - Kullanıcı farklı şehirler arayabilir.
    - 5 günlük hava tahmini görüntülenebilir.
    - Uygulama, PWA olduğu için çevrimdışı da temel işlevlerini sürdürebilir.
-   - Karanlık mod gibi arayüz özellikleri kullanılabilir.
 
 ---
 
