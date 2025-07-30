@@ -230,6 +230,11 @@ body {
     font-size: 1.2em;
 }
 
+/* Sun icon specific styling */
+.hourly-icon .fa-sun {
+    color: #fbbf24;
+}
+
 .hourly-time {
     font-size: 0.8em;
     color: #94a3b8;
@@ -284,6 +289,11 @@ body {
 .daily-icon {
     color: #60a5fa;
     font-size: 1.3em;
+}
+
+/* Sun icon specific styling for daily forecast */
+.daily-icon .fa-sun {
+    color: #fbbf24;
 }
 
 .daily-temp {
